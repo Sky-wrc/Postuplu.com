@@ -25,19 +25,48 @@
             android:layout_width="match_parent"
             android:layout_height="104dp"
             android:gravity="center"
+            android:layout_gravity="center"
             android:textColor="@color/white"
-            android:text="Хочешь поступить в любимый ВУЗ?"
-            android:textSize="30dp" />
+            android:text=""
+            android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/button"
-            android:shadowColor="@color/white"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textSize="20dp"
-            android:backgroundTint="@color/black"
-            android:text="Начни сейчас"
-            android:textColor="@color/white" />
+            android:layout_height="40dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="300dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/black"
+                android:shadowColor="@color/white"
+                android:text=""
+                android:textColorHighlight="@color/white"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <Space
+            android:layout_marginVertical="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
