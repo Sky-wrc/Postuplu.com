@@ -25,15 +25,6 @@
             android:layout_gravity="center_horizontal"
             android:visibility="visible">
 
-            <Space
-                android:id="@+id/space"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <Button
                 android:id="@+id/button3"
                 android:layout_width="61dp"
@@ -50,7 +41,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:layout_weight="0" />
 
         <TextView
@@ -62,54 +53,158 @@
             android:textColor="@color/white"
             android:textSize="30sp" />
 
-        <RadioGroup
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <CheckBox
-                android:id="@+id/checkBox"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CheckBox" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CheckBox" />
-
-            <CheckBox
-                android:id="@+id/checkBox3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CheckBox" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="300dp"
-                android:layout_height="64dp"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/black"
-                android:contentDescription="кнопка перехода дальше"
-                android:shadowColor="@color/white"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
-        </RadioGroup>
+<!--                    <CheckBox-->
+<!--                        android:id="@+id/chkIT"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:text="Информационные технологии (IT) и цифровая экономика"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkEngineering"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Инженерия и технические науки"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkNaturalScience"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Естественные науки"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkMedicine"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Медицина и здравоохранение"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkAgriculture"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Сельское хозяйство"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkEconomics"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Экономика, менеджмент и управление"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkEducation"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Педагогика и образование"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkLaw"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Юриспруденция"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkHumanities"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Гуманитарные и социальные науки"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:id="@+id/chkInternational"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:text="Международные отношения и регионоведение"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:id="@+id/chkCreative"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:buttonTint="@color/white"-->
+<!--                        android:buttonTintMode="multiply"-->
+<!--                        android:text="Творческие и культурные направления"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="14sp" />-->
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="300dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center_horizontal"
+                        android:backgroundTint="@color/black"
+                        android:contentDescription="кнопка перехода дальше"
+                        android:shadowColor="@color/white"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </RadioGroup>
+            </LinearLayout>
+        </ScrollView>
+
 
     </LinearLayout>
 

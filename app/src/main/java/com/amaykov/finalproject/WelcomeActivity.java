@@ -45,7 +45,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(WelcomeActivity.this, OrientationChooser1.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
-                finish();
+                //finish();
             }
         });
 

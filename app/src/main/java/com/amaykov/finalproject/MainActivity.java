@@ -1,5 +1,7 @@
 package com.amaykov.finalproject;
 
+import static java.lang.System.exit;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             // Завершаем текущую активность, если не хотим возвращаться к ней
             finish();
         }
+        exit(0);
 //        EdgeToEdge.enable(this);
 //        setContentView(R.layout.activity_main);
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

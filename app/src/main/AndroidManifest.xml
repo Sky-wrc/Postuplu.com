@@ -12,8 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Postuplucom">
         <activity
+            android:name=".AdmissionWays3"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".UniversityChooser2"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".OrientationChooser1"
             android:exported="false"
@@ -21,7 +26,6 @@
         <activity
             android:name=".WelcomeActivity"
             android:exported="false"
-            android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"

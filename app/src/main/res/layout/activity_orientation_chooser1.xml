@@ -76,11 +76,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/white"
+                        android:buttonTintMode="multiply"
                         android:text="Информационные технологии (IT) и цифровая экономика"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkEngineering"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -90,6 +92,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkNaturalScience"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -99,6 +102,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkMedicine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -108,6 +112,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkAgriculture"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,6 +122,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkEconomics"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -126,6 +132,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -135,6 +142,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkLaw"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -144,6 +152,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkHumanities"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -153,6 +162,7 @@
                         android:textSize="14sp" />
 
                     <CheckBox
+                        android:buttonTintMode="multiply"
                         android:id="@+id/chkInternational"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -166,6 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/white"
+                        android:buttonTintMode="multiply"
                         android:text="Творческие и культурные направления"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />

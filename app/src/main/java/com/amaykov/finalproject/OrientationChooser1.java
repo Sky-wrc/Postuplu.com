@@ -2,22 +2,20 @@ package com.amaykov.finalproject;
 
 import static java.lang.System.exit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 
 import android.widget.CheckBox;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.app.AlertDialog;
 
 public class OrientationChooser1 extends AppCompatActivity {
 
@@ -58,7 +56,7 @@ public class OrientationChooser1 extends AppCompatActivity {
                 showSelectedDirections();
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
-                finish();
+                //finish();
             }
         });
 
@@ -66,12 +64,34 @@ public class OrientationChooser1 extends AppCompatActivity {
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exit(0);
+                PopupMenu pomogalka = new PopupMenu(OrientationChooser1.this, info);
+                pomogalka.getMenuInflater().inflate(R.menu.pomogalka_menu, pomogalka.getMenu());
 
-//                Intent intent = new Intent(rientationChooser1.this, OrientationChooser1.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
-//                finish();
+                pomogalka.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == R.id.inf_itm) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(OrientationChooser1.this);
+                        builder.setTitle("Большая подсказка")
+                                .setMessage("Здесь может быть очень длинный текст...\n\n" +
+                                        "Вы можете добавить сюда инструкции, правила " +
+                                        "или описание функций вашего приложения.")
+                                .setPositiveButton("назад", (dialog, id) -> {
+
+                                    dialog.dismiss();
+                                });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else if (item.getItemId() == R.id.back_itm) {
+                        finish();
+                    } else if (item.getItemId() == R.id.exit_itm) {
+                        finishAffinity();
+                    }
+                    return false;
+                });
+
+
+                pomogalka.show();
+
             }
         });
     }
