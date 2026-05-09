@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrientationChooser1">
+    tools:context=".UniversityChooser2">
 
     <LinearLayout
         android:layout_width="match_parent"

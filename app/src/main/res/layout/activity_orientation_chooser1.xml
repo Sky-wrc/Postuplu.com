@@ -75,98 +75,98 @@
                         android:id="@+id/chkIT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
-                        android:buttonTintMode="multiply"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Информационные технологии (IT) и цифровая экономика"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkEngineering"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Инженерия и технические науки"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkNaturalScience"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Естественные науки"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkMedicine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Медицина и здравоохранение"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkAgriculture"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Сельское хозяйство"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkEconomics"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Экономика, менеджмент и управление"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Педагогика и образование"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkLaw"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Юриспруденция"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkHumanities"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Гуманитарные и социальные науки"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
                     <CheckBox
-                        android:buttonTintMode="multiply"
                         android:id="@+id/chkInternational"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Международные отношения и регионоведение"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -175,8 +175,8 @@
                         android:id="@+id/chkCreative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
-                        android:buttonTintMode="multiply"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/checkbox_wizard"
                         android:text="Творческие и культурные направления"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
