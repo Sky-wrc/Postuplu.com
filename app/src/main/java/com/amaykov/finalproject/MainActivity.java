@@ -21,21 +21,22 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
         boolean isFirstRun = settings.getBoolean("isFirstRun", true);
-
+        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+        startActivity(intent);
         if (isFirstRun == false)
         {
-            Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
 
             //setContentView(R.layout.activity_welcome);
             // Меняем флаг, чтобы при следующем запуске это не повторялось
             settings.edit().putBoolean("isFirstRun", false).apply();
 
             // Завершаем текущую активность, если не хотим возвращаться к ней
-            finish();
+            //  finish();
         }
-        exit(0);
+        //exit(0);
 //        EdgeToEdge.enable(this);
 //        setContentView(R.layout.activity_main);
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
