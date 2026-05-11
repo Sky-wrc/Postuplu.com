@@ -17,6 +17,13 @@ public class UniversityChooser2 extends StepActivity {
 
     @NonNull
     @Override
+    protected CharSequence getHelpMessage() {
+        return "Выбери вузы, которые рассматриваешь для поступления.\n" +
+                "После выбора нажми «Далее», чтобы перейти к следующему шагу.";
+    }
+
+    @NonNull
+    @Override
     protected Class<?> getNextStepClass() {
         return AdmissionWays3.class;
     }

@@ -32,6 +32,13 @@ public class OrientationChooser1 extends StepActivity {
 
     @NonNull
     @Override
+    protected CharSequence getHelpMessage() {
+        return "Отметь одно или несколько направлений, которые тебе интересны.\n" +
+                "Потом нажми «Далее», чтобы перейти к выбору вузов";
+    }
+
+    @NonNull
+    @Override
     protected Class<?> getNextStepClass() {
         return UniversityChooser2.class;
     }

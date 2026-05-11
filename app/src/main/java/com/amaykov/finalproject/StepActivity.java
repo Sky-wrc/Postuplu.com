@@ -35,7 +35,7 @@ public abstract class StepActivity extends AppCompatActivity {
         });
 
         Button help = findViewById(R.id.button3);
-        HelpMenu.bind(this, help);
+        HelpMenu.bind(this, help, this::getHelpMessage);
 
         onStepReady(savedInstanceState);
     }
@@ -48,6 +48,14 @@ public abstract class StepActivity extends AppCompatActivity {
 
     @NonNull
     protected abstract Class<?> getNextStepClass();
+
+    /**
+     * Текст подсказки для этого шага (показывается из меню помощи).
+     */
+    @NonNull
+    protected CharSequence getHelpMessage() {
+        return "";
+    }
 
     /**
      * Флаг-валидация для кнопки «Далее». Если вернёт false — переход не произойдёт.
