@@ -1,11 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Postuplu.com</string>
-    <string name="wizard_next">Далее</string>
-    <string name="orientation_step_title">Выбери какие направления тебя интересуют</string>
-    <string name="university_step_title">Выбери вузы или города для поступления</string>
-    <string name="help_dialog_title">Большая подсказка</string>
-    <string name="help_dialog_message">Здесь может быть очень длинный текст…\n\nВы можете добавить сюда инструкции, правила или описание функций вашего приложения.</string>
-    <string name="help_dialog_back">назад</string>
-    <string name="selected_directions_prefix">Вы выбрали: </string>
-    <string name="selected_directions_none">Ничего не выбрано — отметь хотя бы одно направление.</string>
 </resources>

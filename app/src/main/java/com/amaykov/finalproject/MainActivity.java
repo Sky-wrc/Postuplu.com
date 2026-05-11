@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isFirstRun = settings.getBoolean("isFirstRun", true);
         Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
         startActivity(intent);
+        finish();
         if (isFirstRun == false)
         {
 
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             settings.edit().putBoolean("isFirstRun", false).apply();
 
             // Завершаем текущую активность, если не хотим возвращаться к ней
-            //  finish();
+
         }
         //exit(0);
 //        EdgeToEdge.enable(this);

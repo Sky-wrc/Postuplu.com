@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Информационные технологии (IT) и цифровая экономика"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -86,7 +86,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Инженерия и технические науки"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -96,7 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Естественные науки"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -106,7 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Медицина и здравоохранение"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -116,7 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Сельское хозяйство"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -126,7 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Экономика, менеджмент и управление"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Педагогика и образование"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -146,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Юриспруденция"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -156,7 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Гуманитарные и социальные науки"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -166,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Международные отношения и регионоведение"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
@@ -176,7 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_wizard"
+                        android:button="@drawable/checkbox_custom"
                         android:text="Творческие и культурные направления"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />

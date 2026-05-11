@@ -7,11 +7,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * Общее меню «помощь / назад / выход» для шагов визарда.
+ * Общее меню «помощь / назад / выход» для шаговых экранов.
  */
-public final class WizardHelpMenu {
+public final class HelpMenu {
 
-    private WizardHelpMenu() {
+    private HelpMenu() {
     }
 
     public static void bind(AppCompatActivity activity, View anchor) {
@@ -22,9 +22,9 @@ public final class WizardHelpMenu {
                 int id = item.getItemId();
                 if (id == R.id.inf_itm) {
                     new AlertDialog.Builder(activity)
-                            .setTitle(R.string.help_dialog_title)
-                            .setMessage(R.string.help_dialog_message)
-                            .setPositiveButton(R.string.help_dialog_back, (dialog, which) -> dialog.dismiss())
+                            .setTitle("Это очень полезная подсказка")
+                            .setMessage("Здесь может быть очень длинный текст…\n\nВы можете добавить сюда инструкции, правила или описание функций вашего приложения.")
+                            .setPositiveButton("назад", (dialog, which) -> dialog.dismiss())
                             .show();
                 } else if (id == R.id.back_itm) {
                     activity.finish();

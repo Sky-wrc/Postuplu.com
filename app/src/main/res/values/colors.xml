@@ -5,7 +5,6 @@
     <color name="red">#FF0000</color>
     <color name="background">#212323</color>
     <color name="primary">#345B5D</color>
-    <!-- Контраст к тёмному фону (#212323): видимая «галочка» чекбокса -->
     <color name="checkbox_control">#7FD1C8</color>
 
 </resources>

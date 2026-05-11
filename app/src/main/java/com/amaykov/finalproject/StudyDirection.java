@@ -1,10 +1,7 @@
 package com.amaykov.finalproject;
 
-/**
- * Связь id чекбокса в разметке с человекочитаемым названием направления.
- */
 public enum StudyDirection {
-    IT(R.id.chkIT, "Информационные технологии (IT) и цифровая экономика"),
+    IT(R.id.chkIT, "Информационные технологии (IT)"),
     ENGINEERING(R.id.chkEngineering, "Инженерия и технические науки"),
     NATURAL_SCIENCE(R.id.chkNaturalScience, "Естественные науки"),
     MEDICINE(R.id.chkMedicine, "Медицина и здравоохранение"),

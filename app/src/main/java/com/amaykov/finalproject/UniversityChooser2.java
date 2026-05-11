@@ -2,17 +2,17 @@ package com.amaykov.finalproject;
 
 import androidx.annotation.NonNull;
 
-public class UniversityChooser2 extends WizardStepActivity {
+public class UniversityChooser2 extends StepActivity {
 
     @Override
-    protected int getWizardLayoutResId() {
+    protected int getStepLayoutResId() {
         return R.layout.activity_university_chooser2;
     }
 
     @NonNull
     @Override
     protected String getStepTitle() {
-        return getString(R.string.university_step_title);
+        return "Выбери вузы, которые тебя интересуют";
     }
 
     @NonNull

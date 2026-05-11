@@ -7,16 +7,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.widget.CompoundButtonCompat;
 
-public class OrientationChooser1 extends WizardStepActivity {
+public class OrientationChooser1 extends StepActivity {
 
     @Override
-    protected int getWizardLayoutResId() {
+    protected int getStepLayoutResId() {
         return R.layout.activity_orientation_chooser1;
     }
 
     @Override
-    protected void onWizardStepReady(Bundle savedInstanceState) {
-        // Тема задаёт buttonTint — для кастомного vector с обводкой тинт скрывает галочку / сам значок
+    protected void onStepReady(Bundle savedInstanceState) {
         for (StudyDirection d : StudyDirection.values()) {
             CheckBox cb = findViewById(d.getCheckboxId());
             if (cb != null) {
@@ -28,7 +27,7 @@ public class OrientationChooser1 extends WizardStepActivity {
     @NonNull
     @Override
     protected String getStepTitle() {
-        return getString(R.string.orientation_step_title);
+        return "Выбери какие направления тебя интересуют";
     }
 
     @NonNull
@@ -38,27 +37,33 @@ public class OrientationChooser1 extends WizardStepActivity {
     }
 
     @Override
+    protected boolean canNavigateNext() {
+        for (StudyDirection direction : StudyDirection.values()) {
+            CheckBox checkBox = findViewById(direction.getCheckboxId());
+            if (checkBox != null && checkBox.isChecked()) {
+                return true;
+            }
+        }
+        Toast.makeText(this, "Ничего не выбрано — отметь хотя бы одно направление.", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
     protected void onBeforeNavigateNext() {
         showSelectedDirections();
     }
 
     private void showSelectedDirections() {
-        StringBuilder selected = new StringBuilder(getString(R.string.selected_directions_prefix));
         boolean hasSelected = false;
         for (StudyDirection direction : StudyDirection.values()) {
             CheckBox checkBox = findViewById(direction.getCheckboxId());
             if (checkBox != null && checkBox.isChecked()) {
-                if (hasSelected) {
-                    selected.append(' ');
-                }
-                selected.append(direction.getDisplayLabel());
                 hasSelected = true;
             }
         }
         if (!hasSelected) {
-            Toast.makeText(this, R.string.selected_directions_none, Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this, selected, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, selected, Toast.LENGTH_SHORT).show();
     }
 }

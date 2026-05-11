@@ -10,41 +10,51 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * Общий каркас шага визарда: заголовок, «Далее», кнопка помощи.
+ * Общий каркас шага: заголовок, «Далее», кнопка помощи.
  */
-public abstract class WizardStepActivity extends AppCompatActivity {
+public abstract class StepActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getWizardLayoutResId());
+        setContentView(getStepLayoutResId());
 
         TextView title = findViewById(R.id.textView2);
         title.setText(getStepTitle());
 
         Button next = findViewById(R.id.button);
-        next.setText(R.string.wizard_next);
+        next.setText("Далее");
         next.setOnClickListener(v -> {
             onBeforeNavigateNext();
-            Intent intent = new Intent(WizardStepActivity.this, getNextStepClass());
+            if (!canNavigateNext()) {
+                return;
+            }
+            Intent intent = new Intent(StepActivity.this, getNextStepClass());
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
         });
 
         Button help = findViewById(R.id.button3);
-        WizardHelpMenu.bind(this, help);
+        HelpMenu.bind(this, help);
 
-        onWizardStepReady(savedInstanceState);
+        onStepReady(savedInstanceState);
     }
 
     @LayoutRes
-    protected abstract int getWizardLayoutResId();
+    protected abstract int getStepLayoutResId();
 
     @NonNull
     protected abstract String getStepTitle();
 
     @NonNull
     protected abstract Class<?> getNextStepClass();
+
+    /**
+     * Флаг-валидация для кнопки «Далее». Если вернёт false — переход не произойдёт.
+     */
+    protected boolean canNavigateNext() {
+        return true;
+    }
 
     /**
      * Вызывается перед переходом на следующий экран (например, показ сводки выбора).
@@ -55,6 +65,6 @@ public abstract class WizardStepActivity extends AppCompatActivity {
     /**
      * Хук после привязки общих элементов — для чекбоксов и т.п.
      */
-    protected void onWizardStepReady(Bundle savedInstanceState) {
+    protected void onStepReady(Bundle savedInstanceState) {
     }
 }

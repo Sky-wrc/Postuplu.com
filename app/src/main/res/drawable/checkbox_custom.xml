@@ -4,13 +4,13 @@
     <item
         android:state_checked="true"
         android:state_pressed="true"
-        android:drawable="@drawable/checkbox_wizard_checked" />
+        android:drawable="@drawable/checkbox_custom_checked" />
     <item
         android:state_checked="false"
         android:state_pressed="true"
-        android:drawable="@drawable/checkbox_wizard_unchecked" />
+        android:drawable="@drawable/checkbox_custom_unchecked" />
     <item
         android:state_checked="true"
-        android:drawable="@drawable/checkbox_wizard_checked" />
-    <item android:drawable="@drawable/checkbox_wizard_unchecked" />
+        android:drawable="@drawable/checkbox_custom_checked" />
+    <item android:drawable="@drawable/checkbox_custom_unchecked" />
 </selector>

@@ -4,7 +4,6 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Явный размер у vector — иначе shape без размера даёт 0×0 у кнопки чекбокса -->
     <path
         android:pathData="M5,5 L19,5 L19,19 L5,19 Z"
         android:fillColor="@android:color/transparent"
