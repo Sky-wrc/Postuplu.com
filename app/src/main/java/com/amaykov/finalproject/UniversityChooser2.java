@@ -10,12 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.CompoundButtonCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UniversityChooser2 extends StepActivity {
 
@@ -50,6 +53,7 @@ public class UniversityChooser2 extends StepActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         universityRows.clear();
         container.removeAllViews();
+        Set<String> saved = new HashSet<>(UserSelectionStore.of(this).get(SelectionPool.UNIVERSITIES));
 
         for (University university : universities) {
             View rowView = inflater.inflate(R.layout.item_university_row, container, false);
@@ -61,6 +65,7 @@ public class UniversityChooser2 extends StepActivity {
 
             checkBox.setText(university.getAbbreviation());
             CompoundButtonCompat.setButtonTintList(checkBox, null);
+            checkBox.setChecked(saved.contains(university.getAbbreviation()));
 
             infoButton.setContentDescription(INFO_BUTTON_DESCRIPTION);
             infoButton.setOnClickListener(v -> showUniversityInfo(university));
@@ -104,6 +109,24 @@ public class UniversityChooser2 extends StepActivity {
     protected Class<?> getNextStepClass()
     {
         return AdmissionWays3.class;
+    }
+
+    @Nullable
+    @Override
+    protected SelectionPool getSelectionPool() {
+        return SelectionPool.UNIVERSITIES;
+    }
+
+    @NonNull
+    @Override
+    protected List<String> collectSelectedValues() {
+        List<String> selected = new ArrayList<>();
+        for (UniversityRow row : universityRows) {
+            if (row.checkBox.isChecked()) {
+                selected.add(row.university.getAbbreviation());
+            }
+        }
+        return selected;
     }
 
     @Override

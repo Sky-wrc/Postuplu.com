@@ -12,13 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Postuplucom">
         <activity
+            android:name=".SpecialityChooser4"
+            android:exported="false" />
+        <activity
+            android:name=".DegreeChooser3"
+            android:exported="false" />
+        <activity
             android:name=".AdmissionWays3"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UniversityChooser2"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".OrientationChooser1"
             android:exported="false"

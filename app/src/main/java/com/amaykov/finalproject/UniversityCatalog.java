@@ -67,12 +67,14 @@ public final class UniversityCatalog {
         }
     }
 
-    private static University parseEntry(@NonNull String line) {
+    private static University parseEntry(@NonNull String line)
+    {
         int dashIndex = line.indexOf(EM_DASH);
         if (dashIndex < 0) {
             dashIndex = line.indexOf(" - ");
         }
-        if (dashIndex >= 0) {
+        if (dashIndex >= 0)
+        {
             String abbreviation = line.substring(0, dashIndex).trim();
             int restStart = dashIndex + 1;
             if (dashIndex + 2 < line.length()
@@ -109,9 +111,6 @@ public final class UniversityCatalog {
         return new NameAndDescription(rest, "");
     }
 
-    /**
-     * Ищет ". " между официальным названием и описанием (без regex lookbehind — он ломается на Android).
-     */
     private static int findNameDescriptionBoundary(@NonNull String text) {
         int parenDot = text.indexOf("). ");
         if (parenDot >= 0) {

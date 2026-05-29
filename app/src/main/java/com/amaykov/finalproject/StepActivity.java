@@ -7,7 +7,11 @@ import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Общий каркас шага: заголовок, «Далее», кнопка помощи.
@@ -25,9 +29,12 @@ public abstract class StepActivity extends AppCompatActivity {
         Button next = findViewById(R.id.button);
         next.setText("Далее");
         next.setOnClickListener(v -> {
-            onBeforeNavigateNext();
             if (!canNavigateNext()) {
                 return;
+            }
+            SelectionPool pool = getSelectionPool();
+            if (pool != null) {
+                UserSelectionStore.of(this).put(pool, collectSelectedValues());
             }
             Intent intent = new Intent(StepActivity.this, getNextStepClass());
             startActivity(intent);
@@ -49,30 +56,31 @@ public abstract class StepActivity extends AppCompatActivity {
     @NonNull
     protected abstract Class<?> getNextStepClass();
 
-    /**
-     * Текст подсказки для этого шага (показывается из меню помощи).
-     */
+    
     @NonNull
     protected CharSequence getHelpMessage() {
         return "";
     }
 
-    /**
-     * Флаг-валидация для кнопки «Далее». Если вернёт false — переход не произойдёт.
-     */
+    
     protected boolean canNavigateNext() {
         return true;
     }
 
     /**
-     * Вызывается перед переходом на следующий экран (например, показ сводки выбора).
+     * Пул для сохранения при «Далее»; {@code null} — шаг ничего не пишет в store.
      */
-    protected void onBeforeNavigateNext() {
+    @Nullable
+    protected SelectionPool getSelectionPool() {
+        return null;
     }
 
-    /**
-     * Хук после привязки общих элементов — для чекбоксов и т.п.
-     */
+    /** Только отмеченные чекбоксы текущего шага (вызывается после успешной {@link #canNavigateNext()}). */
+    @NonNull
+    protected List<String> collectSelectedValues() {
+        return Collections.emptyList();
+    }
+
     protected void onStepReady(Bundle savedInstanceState) {
     }
 }
