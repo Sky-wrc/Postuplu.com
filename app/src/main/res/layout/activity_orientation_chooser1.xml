@@ -10,13 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
@@ -63,148 +61,36 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RadioGroup
+                <LinearLayout
+                    android:id="@+id/direction_list_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
 
-                    <CheckBox
-                        android:id="@+id/chkIT"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Информационные технологии (IT) и цифровая экономика"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/black"
+                    android:contentDescription="кнопка перехода дальше"
+                    android:shadowColor="@color/white"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
-                    <CheckBox
-                        android:id="@+id/chkEngineering"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Инженерия и технические науки"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkNaturalScience"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Естественные науки"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkMedicine"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Медицина и здравоохранение"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkAgriculture"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Сельское хозяйство"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkEconomics"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Экономика, менеджмент и управление"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkEducation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Педагогика и образование"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkLaw"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Юриспруденция"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkHumanities"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Гуманитарные и социальные науки"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkInternational"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Международные отношения и регионоведение"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/chkCreative"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/checkbox_custom"
-                        android:text="Творческие и культурные направления"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp" />
-
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="300dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center_horizontal"
-                        android:backgroundTint="@color/black"
-                        android:contentDescription="кнопка перехода дальше"
-                        android:shadowColor="@color/white"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </RadioGroup>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </ScrollView>
-
 
     </LinearLayout>
 
