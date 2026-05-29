@@ -34,6 +34,7 @@ public abstract class StepActivity extends AppCompatActivity {
             }
             SelectionPool pool = getSelectionPool();
             if (pool != null) {
+                onBeforeSaveSelections();
                 UserSelectionStore.of(this).put(pool, collectSelectedValues());
             }
             Intent intent = new Intent(StepActivity.this, getNextStepClass());
@@ -79,6 +80,10 @@ public abstract class StepActivity extends AppCompatActivity {
     @NonNull
     protected List<String> collectSelectedValues() {
         return Collections.emptyList();
+    }
+
+    /** Вызывается перед записью {@link #collectSelectedValues()} в {@link UserSelectionStore}. */
+    protected void onBeforeSaveSelections() {
     }
 
     protected void onStepReady(Bundle savedInstanceState) {

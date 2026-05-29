@@ -5,7 +5,9 @@ package com.amaykov.finalproject;
  */
 public enum SelectionPool {
     STUDY_DIRECTIONS("study_directions"),
-    UNIVERSITIES("universities");
+    UNIVERSITIES("universities"),
+    DEGREE("degree"),
+    SPECIALTIES("specialties");
 
     final String key;
 

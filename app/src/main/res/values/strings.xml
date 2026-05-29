@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <string name="degree_bachelor">Бакалавриат</string>
+    <string name="degree_master">Магистратура</string>
+</resources>

@@ -108,7 +108,7 @@ public class UniversityChooser2 extends StepActivity {
     @Override
     protected Class<?> getNextStepClass()
     {
-        return AdmissionWays3.class;
+        return DegreeChooser3.class;
     }
 
     @Nullable

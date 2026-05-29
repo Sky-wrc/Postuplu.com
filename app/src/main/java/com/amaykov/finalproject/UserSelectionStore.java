@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +92,18 @@ public final class UserSelectionStore {
 
     public void clear() {
         prefs.edit().remove(KEY_POOLS_JSON).apply();
+    }
+
+    public void remove(@NonNull SelectionPool pool) {
+        JSONObject root = loadRootJson();
+        root.remove(pool.key);
+        prefs.edit().putString(KEY_POOLS_JSON, root.toString()).apply();
+    }
+
+    @Nullable
+    public String getFirstValue(@NonNull SelectionPool pool) {
+        List<String> values = get(pool);
+        return values.isEmpty() ? null : values.get(0);
     }
 
     @NonNull
