@@ -56,39 +56,29 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
             <LinearLayout
+                android:id="@+id/specialty_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/specialty_list_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="300dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center_horizontal"
-                    android:backgroundTint="@color/black"
-                    android:contentDescription="кнопка перехода дальше"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                android:orientation="vertical" />
         </ScrollView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="300dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/black"
+            android:contentDescription="кнопка перехода дальше"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

@@ -53,114 +53,104 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/admission_way_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <RadioGroup
-                    android:id="@+id/admission_way_radio_group"
+                <RadioButton
+                    android:id="@+id/radio_admission_ege_budget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RadioButton
-                        android:id="@+id/radio_admission_ege_budget"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/radio_custom"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/admission_ege_budget"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_admission_vi"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/radio_custom"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/admission_vi"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_admission_bvi"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/radio_custom"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/admission_bvi"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_admission_target"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/radio_custom"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/admission_target"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_admission_quota"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/radio_custom"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/admission_quota"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_admission_ege_paid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:button="@drawable/radio_custom"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/admission_ege_paid"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-                </RadioGroup>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="300dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center_horizontal"
-                    android:backgroundTint="@color/black"
-                    android:contentDescription="кнопка перехода дальше"
-                    android:text=""
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radio_custom"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/admission_ege_budget"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
-                <Space
+                <RadioButton
+                    android:id="@+id/radio_admission_vi"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radio_custom"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/admission_vi"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_admission_bvi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radio_custom"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/admission_bvi"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_admission_target"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radio_custom"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/admission_target"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_admission_quota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radio_custom"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/admission_quota"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_admission_ege_paid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radio_custom"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/admission_ege_paid"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </RadioGroup>
         </ScrollView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="300dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/black"
+            android:contentDescription="кнопка перехода дальше"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
