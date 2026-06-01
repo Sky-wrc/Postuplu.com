@@ -80,7 +80,7 @@
                     android:button="@drawable/radio_custom"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/degree_bachelor"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
@@ -92,7 +92,7 @@
                     android:button="@drawable/radio_custom"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/degree_master"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="18sp" />
             </RadioGroup>

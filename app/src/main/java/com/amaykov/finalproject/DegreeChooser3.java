@@ -29,9 +29,11 @@ public class DegreeChooser3 extends StepActivity {
         radioBachelor = findViewById(R.id.radio_bachelor);
         radioMaster = findViewById(R.id.radio_master);
         if (radioBachelor != null) {
+            radioBachelor.setText(DegreeLevel.BACHELOR.getDisplayLabel());
             CompoundButtonCompat.setButtonTintList(radioBachelor, null);
         }
         if (radioMaster != null) {
+            radioMaster.setText(DegreeLevel.MASTER.getDisplayLabel());
             CompoundButtonCompat.setButtonTintList(radioMaster, null);
         }
 

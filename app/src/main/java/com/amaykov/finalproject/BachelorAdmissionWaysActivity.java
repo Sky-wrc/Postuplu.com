@@ -32,6 +32,7 @@ public class BachelorAdmissionWaysActivity extends StepActivity {
         for (AdmissionWay way : AdmissionWay.values()) {
             RadioButton radioButton = findViewById(way.getRadioButtonId());
             if (radioButton != null) {
+                radioButton.setText(way.getDisplayLabel());
                 CompoundButtonCompat.setButtonTintList(radioButton, null);
             }
         }

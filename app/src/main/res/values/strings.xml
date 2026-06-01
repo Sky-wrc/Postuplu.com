@@ -1,10 +1,2 @@
 <resources>
-    <string name="degree_bachelor">Бакалавриат</string>
-    <string name="degree_master">Магистратура</string>
-    <string name="admission_ege_budget">ЕГЭ(бюджет)</string>
-    <string name="admission_vi">ВИ</string>
-    <string name="admission_bvi">БВИ</string>
-    <string name="admission_target">Целевое</string>
-    <string name="admission_quota">Квота/Льгота</string>
-    <string name="admission_ege_paid">ЕГЭ(платка)</string>
 </resources>
