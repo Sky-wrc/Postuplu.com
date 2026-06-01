@@ -19,9 +19,13 @@ import java.util.Set;
 
 public class OrientationChooser1 extends StepActivity {
 
+    private static final int MAX_DIRECTIONS = 3;
     private static final String MSG_LOAD_ERROR = "Не удалось загрузить список направлений";
+    private static final String MSG_MAX_DIRECTIONS =
+            "Можно выбрать не больше 3 направлений.";
 
     private final List<DirectionRow> directionRows = new ArrayList<>();
+    private final List<CheckBox> directionCheckBoxes = new ArrayList<>();
 
     @Override
     protected int getStepLayoutResId() {
@@ -46,8 +50,10 @@ public class OrientationChooser1 extends StepActivity {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         directionRows.clear();
+        directionCheckBoxes.clear();
         container.removeAllViews();
         Set<String> saved = new HashSet<>(UserSelectionStore.of(this).get(SelectionPool.STUDY_DIRECTIONS));
+        int restoredCount = 0;
 
         for (Direction direction : directions) {
             View rowView = inflater.inflate(R.layout.item_direction_row, container, false);
@@ -58,10 +64,28 @@ public class OrientationChooser1 extends StepActivity {
 
             checkBox.setText(direction.getLabel());
             CompoundButtonCompat.setButtonTintList(checkBox, null);
-            checkBox.setChecked(saved.contains(direction.getLabel()));
+            boolean restore = SelectionLimitHelper.shouldRestoreAsChecked(
+                    saved.contains(direction.getLabel()),
+                    restoredCount,
+                    MAX_DIRECTIONS
+            );
+            checkBox.setChecked(restore);
+            if (restore) {
+                restoredCount++;
+            }
 
             container.addView(rowView);
             directionRows.add(new DirectionRow(direction, checkBox));
+            directionCheckBoxes.add(checkBox);
+        }
+
+        for (CheckBox checkBox : directionCheckBoxes) {
+            SelectionLimitHelper.bindMaxSelection(
+                    checkBox,
+                    directionCheckBoxes,
+                    MAX_DIRECTIONS,
+                    MSG_MAX_DIRECTIONS
+            );
         }
     }
 
@@ -92,7 +116,7 @@ public class OrientationChooser1 extends StepActivity {
     @NonNull
     @Override
     protected CharSequence getHelpMessage() {
-        return "Отметь одно или несколько направлений, которые тебе интересны.\n" +
+        return "Отметь от 1 до 3 направлений, которые тебе интересны.\n" +
                 "Потом нажми «Далее», чтобы перейти к выбору вузов";
     }
 
