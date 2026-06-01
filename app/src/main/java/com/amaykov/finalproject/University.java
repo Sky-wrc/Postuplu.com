@@ -2,6 +2,8 @@ package com.amaykov.finalproject;
 
 import androidx.annotation.NonNull;
 
+import java.util.Locale;
+
 /**
  * Вуз из {@code Universities.txt}: аббревиатура на чекбоксе, полное имя и описание в подсказке.
  */
@@ -37,6 +39,17 @@ public final class University {
     @NonNull
     public String getDescription() {
         return description;
+    }
+
+    public boolean matchesSearch(@NonNull String normalizedQuery) {
+        return containsIgnoreCase(abbreviation, normalizedQuery)
+                || containsIgnoreCase(fullName, normalizedQuery)
+                || containsIgnoreCase(description, normalizedQuery)
+                || containsIgnoreCase(rawLine, normalizedQuery);
+    }
+
+    private static boolean containsIgnoreCase(@NonNull String text, @NonNull String normalizedQuery) {
+        return text.toLowerCase(Locale.getDefault()).contains(normalizedQuery);
     }
 
     @NonNull

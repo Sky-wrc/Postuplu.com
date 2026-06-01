@@ -2,10 +2,13 @@ package com.amaykov.finalproject;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class UniversityChooser2 extends StepActivity {
@@ -39,10 +43,10 @@ public class UniversityChooser2 extends StepActivity {
     @Override
     protected void onStepReady(Bundle savedInstanceState) {
         LinearLayout container = findViewById(R.id.university_list_container);
-//        if (container == null) {
-//            Toast.makeText(this, MSG_LOAD_ERROR, Toast.LENGTH_LONG).show();
-//            return;
-//        }
+        if (container == null) {
+            Toast.makeText(this, MSG_LOAD_ERROR, Toast.LENGTH_LONG).show();
+            return;
+        }
 
         List<University> universities;
         try {
@@ -83,7 +87,7 @@ public class UniversityChooser2 extends StepActivity {
             infoButton.setOnClickListener(v -> showUniversityInfo(university));
 
             container.addView(rowView);
-            universityRows.add(new UniversityRow(university, checkBox));
+            universityRows.add(new UniversityRow(university, checkBox, rowView));
             universityCheckBoxes.add(checkBox);
         }
 
@@ -94,6 +98,32 @@ public class UniversityChooser2 extends StepActivity {
                     MAX_UNIVERSITIES,
                     MSG_MAX_UNIVERSITIES
             );
+        }
+
+        EditText searchField = findViewById(R.id.university_search);
+        if (searchField != null) {
+            searchField.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    applyUniversityFilter(s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
+    }
+
+    private void applyUniversityFilter(@NonNull String query) {
+        String normalized = query.trim().toLowerCase(Locale.getDefault());
+        for (UniversityRow row : universityRows) {
+            boolean visible = normalized.isEmpty() || row.university.matchesSearch(normalized);
+            row.rowView.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -112,24 +142,22 @@ public class UniversityChooser2 extends StepActivity {
 
     @NonNull
     @Override
-    protected String getStepTitle()
-    {
+    protected String getStepTitle() {
         return "Выбери вузы, которые тебя интересуют";
     }
 
     @NonNull
     @Override
-    protected CharSequence getHelpMessage()
-    {
+    protected CharSequence getHelpMessage() {
         return "Отметь от 1 до 5 вузов, которые рассматриваешь.\n" +
+                "Используй поиск по аббревиатуре или названию.\n" +
                 "Кнопка «⁝» рядом с аббревиатурой покажет полное название и описание.\n" +
                 "После выбора нажми «Далее».";
     }
 
     @NonNull
     @Override
-    protected Class<?> getNextStepClass()
-    {
+    protected Class<?> getNextStepClass() {
         return DegreeChooser3.class;
     }
 
@@ -152,12 +180,9 @@ public class UniversityChooser2 extends StepActivity {
     }
 
     @Override
-    protected boolean canNavigateNext()
-    {
-        for (UniversityRow row : universityRows)
-        {
-            if (row.checkBox.isChecked())
-            {
+    protected boolean canNavigateNext() {
+        for (UniversityRow row : universityRows) {
+            if (row.checkBox.isChecked()) {
                 return true;
             }
         }
@@ -169,10 +194,12 @@ public class UniversityChooser2 extends StepActivity {
     private static final class UniversityRow {
         final University university;
         final CheckBox checkBox;
+        final View rowView;
 
-        UniversityRow(University university, CheckBox checkBox) {
+        UniversityRow(University university, CheckBox checkBox, View rowView) {
             this.university = university;
             this.checkBox = checkBox;
+            this.rowView = rowView;
         }
     }
 }

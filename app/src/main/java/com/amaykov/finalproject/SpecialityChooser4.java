@@ -2,9 +2,12 @@ package com.amaykov.finalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class SpecialityChooser4 extends StepActivity {
@@ -83,7 +87,7 @@ public class SpecialityChooser4 extends StepActivity {
             }
 
             container.addView(rowView);
-            specialtyRows.add(new SpecialtyRow(specialty, checkBox));
+            specialtyRows.add(new SpecialtyRow(specialty, checkBox, rowView));
             specialtyCheckBoxes.add(checkBox);
         }
 
@@ -94,6 +98,33 @@ public class SpecialityChooser4 extends StepActivity {
                     MAX_SPECIALTIES,
                     MSG_MAX_SPECIALTIES
             );
+        }
+
+        EditText searchField = findViewById(R.id.specialty_search);
+        if (searchField != null) {
+            searchField.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    applySpecialtyFilter(s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
+    }
+
+    private void applySpecialtyFilter(@NonNull String query) {
+        String normalized = query.trim().toLowerCase(Locale.getDefault());
+        for (SpecialtyRow row : specialtyRows) {
+            boolean visible = normalized.isEmpty()
+                    || row.specialty.getLabel().toLowerCase(Locale.getDefault()).contains(normalized);
+            row.rowView.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -132,6 +163,7 @@ public class SpecialityChooser4 extends StepActivity {
     @Override
     protected CharSequence getHelpMessage() {
         return "Отметь от 1 до 5 специальностей из списка.\n" +
+                "Используй поиск - 🔍, чтобы быстро найти нужную специальность.\n" +
                 "Список соответствует выбранной ступени (бакалавриат или магистратура).";
     }
 
@@ -164,10 +196,12 @@ public class SpecialityChooser4 extends StepActivity {
     private static final class SpecialtyRow {
         final Specialty specialty;
         final CheckBox checkBox;
+        final View rowView;
 
-        SpecialtyRow(Specialty specialty, CheckBox checkBox) {
+        SpecialtyRow(Specialty specialty, CheckBox checkBox, View rowView) {
             this.specialty = specialty;
             this.checkBox = checkBox;
+            this.rowView = rowView;
         }
     }
 }
