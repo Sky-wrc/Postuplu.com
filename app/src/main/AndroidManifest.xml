@@ -18,7 +18,7 @@
             android:name=".DegreeChooser3"
             android:exported="false" />
         <activity
-            android:name=".AdmissionWays5"
+            android:name=".BachelorAdmissionWaysActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

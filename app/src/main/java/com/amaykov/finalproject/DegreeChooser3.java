@@ -68,6 +68,7 @@ public class DegreeChooser3 extends StepActivity {
         DegreeLevel selected = getSelectedDegreeLevel();
         if (selected != null && (previousKey == null || !previousKey.equals(selected.getStorageKey()))) {
             store.remove(SelectionPool.SPECIALTIES);
+            store.remove(SelectionPool.BACHELOR_ADMISSION_WAY);
         }
     }
 

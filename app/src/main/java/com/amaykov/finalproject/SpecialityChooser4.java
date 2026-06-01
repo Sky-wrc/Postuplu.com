@@ -115,7 +115,10 @@ public class SpecialityChooser4 extends StepActivity {
     @NonNull
     @Override
     protected Class<?> getNextStepClass() {
-        return AdmissionWays5.class;
+        if (resolveDegreeLevel() == DegreeLevel.BACHELOR) {
+            return BachelorAdmissionWaysActivity.class;
+        }
+        return MainActivity.class;
     }
 
     @Override

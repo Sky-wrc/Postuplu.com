@@ -37,7 +37,7 @@ public abstract class StepActivity extends AppCompatActivity {
                 onBeforeSaveSelections();
                 UserSelectionStore.of(this).put(pool, collectSelectedValues());
             }
-            Intent intent = new Intent(StepActivity.this, getNextStepClass());
+            Intent intent = createNextIntent();
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
         });
@@ -87,5 +87,14 @@ public abstract class StepActivity extends AppCompatActivity {
     }
 
     protected void onStepReady(Bundle savedInstanceState) {
+    }
+
+    @NonNull
+    protected Intent createNextIntent() {
+        Intent intent = new Intent(this, getNextStepClass());
+        if (MainActivity.class.equals(getNextStepClass())) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        return intent;
     }
 }
