@@ -10,7 +10,7 @@ public enum AdmissionWay {
     EGE_BUDGET("ege_budget", "ЕГЭ(бюджет)", R.id.radio_admission_ege_budget),
     VI("vi", "ВИ", R.id.radio_admission_vi),
     BVI("bvi", "БВИ", R.id.radio_admission_bvi),
-    TARGET("target", "Целевое", R.id.radio_admission_target),
+    TARGET("target", "Целевой набор", R.id.radio_admission_target),
     QUOTA("quota", "Квота/Льгота", R.id.radio_admission_quota),
     EGE_PAID("ege_paid", "ЕГЭ(платка)", R.id.radio_admission_ege_paid);
 
