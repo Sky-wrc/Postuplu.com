@@ -35,8 +35,8 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="360dp"
-                android:layout_height="50dp"
+                android:layout_width="352dp"
+                android:layout_height="35dp"
                 android:shadowColor="@color/white"
                 android:shadowRadius="2"
                 android:text=" Советы по поступлению"
@@ -45,13 +45,12 @@
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="5dp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -62,6 +61,7 @@
             android:scrollbarStyle="outsideOverlay"
             android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
             android:scrollbars="vertical">
+
 
             <TextView
                 android:id="@+id/main_text"

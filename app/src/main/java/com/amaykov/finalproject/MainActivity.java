@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(GenerateContentResponse result) {
                 String resultText = result.getText();
                 if (resultText == null || resultText.isEmpty()) {
-                    mainText.setText("Пустой ответ от нейросети.");
+                    mainText.setText("Мозговой центр не дал ответа");
                     return;
                 }
                 mainText.setText(resultText);
