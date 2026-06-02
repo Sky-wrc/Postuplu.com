@@ -9,9 +9,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-/**
- * Ограничение числа отмеченных чекбоксов в одном списке.
- */
 public final class SelectionLimitHelper {
 
     private SelectionLimitHelper() {

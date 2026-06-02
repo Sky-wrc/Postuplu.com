@@ -52,7 +52,6 @@ public class UniversityChooser2 extends StepActivity {
 
         List<UniversityWithTags> universities;
         try {
-            // UniversityTagsCatalog.load() возвращает неизменяемый список
             universities = new ArrayList<>(UniversityTagsCatalog.load(this));
         } catch (IOException e) {
             Toast.makeText(this, MSG_LOAD_ERROR, Toast.LENGTH_LONG).show();
@@ -71,7 +70,6 @@ public class UniversityChooser2 extends StepActivity {
             if (ra != rb) {
                 return Integer.compare(ra, rb);
             }
-            // при равном ранге сохраняем исходный порядок из Universities+tags
             return Integer.compare(a.sourceIndex, b.sourceIndex);
         });
 

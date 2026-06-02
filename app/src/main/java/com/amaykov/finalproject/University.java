@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.Locale;
 
-/**
- * Вуз из {@code Universities.txt}: аббревиатура на чекбоксе, полное имя и описание в подсказке.
- */
 public final class University {
 
     private final String abbreviation;

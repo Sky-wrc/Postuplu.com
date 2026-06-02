@@ -3,9 +3,6 @@ package com.amaykov.finalproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-/**
- * Ступень обучения: ключ в {@link UserSelectionStore} и файл со специальностями.
- */
 public enum DegreeLevel {
     BACHELOR("bachelor", "Бакалавриат", "Bachelors_Specialties.txt"),
     MASTER("master", "Магистратура", "Master_Specialties.txt");

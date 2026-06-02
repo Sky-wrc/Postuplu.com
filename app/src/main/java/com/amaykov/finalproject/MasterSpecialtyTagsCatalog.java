@@ -14,12 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Загружает магистерские специальности с тегами из {@code assets/Master_Specialities+tags}.
- * <p>
- * Формат строки: {@code <label> #tag1 #tag2 ...}
- * </p>
- */
 public final class MasterSpecialtyTagsCatalog {
 
     private static final String ASSET_FILE = "Master_Specialities+tags";

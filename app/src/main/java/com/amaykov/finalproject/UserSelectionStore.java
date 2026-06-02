@@ -17,9 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Словарь «пул → только выбранные значения», сохраняется в {@link SharedPreferences}.
- */
 public final class UserSelectionStore {
 
     private static final String PREFS_NAME = "user_selections";
@@ -47,7 +44,6 @@ public final class UserSelectionStore {
             root.put(pool.key, array);
             prefs.edit().putString(KEY_POOLS_JSON, root.toString()).apply();
         } catch (JSONException ignored) {
-            // оставляем предыдущее содержимое при ошибке сериализации
         }
     }
 
@@ -85,7 +81,6 @@ public final class UserSelectionStore {
                 }
                 map.put(key, values);
             } catch (JSONException ignored) {
-                // пропускаем повреждённый пул
             }
         }
         return map;
@@ -107,9 +102,6 @@ public final class UserSelectionStore {
         return values.isEmpty() ? null : values.get(0);
     }
 
-    /**
-     * Снимок JSON выбора пользователя для сравнения отпечатка (кэш ответа нейросети).
-     */
     @NonNull
     public String getPoolsJsonSnapshot() {
         String json = prefs.getString(KEY_POOLS_JSON, null);

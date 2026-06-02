@@ -57,7 +57,6 @@ public class SpecialityChooser4 extends StepActivity {
         List<Specialty> specialties;
         try {
             if (degreeLevel == DegreeLevel.BACHELOR || degreeLevel == DegreeLevel.MASTER) {
-                // сортировка специальностей по тегам выбранных направлений
                 List<SpecialtyWithTags> tagged = new ArrayList<>(
                         degreeLevel == DegreeLevel.BACHELOR
                                 ? BachelorSpecialtyTagsCatalog.load(this)

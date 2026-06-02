@@ -14,16 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Загружает список вузов из {@code assets/Universities+tags}.
- * <p>
- * Формат одной строки:
- * {@code <abbr> — <fullName>. <description> ... #tag1 #tag2 ...}
- * </p>
- * <p>
- * Теги начинаются с {@code #} и заканчиваются перед следующим {@code #} либо концом строки.
- * </p>
- */
 public final class UniversityTagsCatalog {
 
     private static final String ASSET_FILE = "Universities+tags";
@@ -49,12 +39,12 @@ public final class UniversityTagsCatalog {
 
                 int firstHash = trimmed.indexOf('#');
                 if (firstHash < 0) {
-                    continue; // пропускаем служебные строки без тегов
+                    continue;
                 }
 
                 int dashIndex = trimmed.indexOf(EM_DASH);
                 if (dashIndex < 0) {
-                    continue; // пропускаем служебные строки без разделителя «аббревиатура — ...»
+                    continue;
                 }
 
                 String preTags = trimmed.substring(0, firstHash).trim();
@@ -111,7 +101,7 @@ public final class UniversityTagsCatalog {
         int boundary = findNameDescriptionBoundary(rest);
         if (boundary >= 0) {
             String fullName = rest.substring(0, boundary).trim();
-            String description = rest.substring(boundary + 2).trim(); // ". "
+            String description = rest.substring(boundary + 2).trim();
             return new NameAndDescription(fullName, description);
         }
         return new NameAndDescription(rest, "");

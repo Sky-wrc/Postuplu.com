@@ -3,9 +3,6 @@ package com.amaykov.finalproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-/**
- * Способ поступления на бакалавриат.
- */
 public enum AdmissionWay {
     EGE_BUDGET("ege_budget", "ЕГЭ(бюджет)", R.id.radio_admission_ege_budget),
     VI("vi", "ВИ", R.id.radio_admission_vi),

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Загружает направления из {@code assets/Directions.txt} (копия project_data/Directions.txt).
- */
 public final class DirectionCatalog {
 
     private static final String ASSET_FILE = "Directions.txt";

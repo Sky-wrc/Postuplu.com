@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Загружает список вузов из {@code assets/Universities.txt} (копия project_data/Universities.txt).
- */
 public final class UniversityCatalog {
 
     private static final String ASSET_FILE = "Universities.txt";

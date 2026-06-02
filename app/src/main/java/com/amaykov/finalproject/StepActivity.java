@@ -17,9 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Общий каркас шага: заголовок, «Далее», кнопка помощи.
- */
 public abstract class StepActivity extends AppCompatActivity {
 
     @Override
@@ -72,21 +69,16 @@ public abstract class StepActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Пул для сохранения при «Далее»; {@code null} — шаг ничего не пишет в store.
-     */
     @Nullable
     protected SelectionPool getSelectionPool() {
         return null;
     }
 
-    /** Только отмеченные чекбоксы текущего шага (вызывается после успешной {@link #canNavigateNext()}). */
     @NonNull
     protected List<String> collectSelectedValues() {
         return Collections.emptyList();
     }
 
-    /** Вызывается перед записью {@link #collectSelectedValues()} в {@link UserSelectionStore}. */
     protected void onBeforeSaveSelections() {
     }
 
@@ -102,10 +94,6 @@ public abstract class StepActivity extends AppCompatActivity {
         return intent;
     }
 
-    /**
-     * Сбрасывает текущий выбор на экране (UI), не трогая сохранённые данные.
-     * Используется пунктом меню «Сбросить выбор».
-     */
     public void resetCurrentSelections() {
         View root = getWindow() != null ? getWindow().getDecorView() : null;
         if (root != null) {

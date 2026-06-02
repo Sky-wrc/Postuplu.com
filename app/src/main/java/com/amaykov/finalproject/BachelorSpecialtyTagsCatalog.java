@@ -14,12 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Загружает бакалаврские специальности с тегами из {@code assets/Bachelors_Specialities+tags}.
- * <p>
- * Формат строки: {@code <label> #tag1 #tag2 ...}
- * </p>
- */
 public final class BachelorSpecialtyTagsCatalog {
 
     private static final String ASSET_FILE = "Bachelors_Specialities+tags";
@@ -44,7 +38,6 @@ public final class BachelorSpecialtyTagsCatalog {
 
                 int firstHash = trimmed.indexOf('#');
                 if (firstHash < 0) {
-                    // допускаем строки без тегов — идут в конец при сортировке по тегам
                     result.add(new SpecialtyWithTags(new Specialty(trimmed), Collections.emptyList(), sourceIndex));
                     sourceIndex++;
                     continue;

@@ -36,16 +36,12 @@ public class WelcomeActivity extends AppCompatActivity {
         text = findViewById(R.id.textView);
         text.setText("Хочешь поступить в любимый ВУЗ?");
 
-        //ActionBar bar = getActionBar();
-        //bar.setBackgroundDrawable(new ColorDrawable(R.color.black));
-
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WelcomeActivity.this, OrientationChooser1.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right);
-                //finish();
             }
         });
 

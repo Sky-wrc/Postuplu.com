@@ -2,9 +2,6 @@ package com.amaykov.finalproject;
 
 import androidx.annotation.NonNull;
 
-/**
- * Специальность из {@code Master_Specialties.txt} или {@code Bachelors_Specialties.txt}.
- */
 public final class Specialty {
 
     private final String label;

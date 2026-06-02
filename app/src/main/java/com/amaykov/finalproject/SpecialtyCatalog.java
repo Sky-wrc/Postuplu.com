@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Загружает список специальностей из assets по выбранной ступени.
- */
 public final class SpecialtyCatalog {
 
     private SpecialtyCatalog() {
