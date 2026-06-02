@@ -17,9 +17,11 @@ import androidx.core.widget.CompoundButtonCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class SpecialityChooser4 extends StepActivity {
@@ -54,7 +56,34 @@ public class SpecialityChooser4 extends StepActivity {
 
         List<Specialty> specialties;
         try {
-            specialties = SpecialtyCatalog.load(this, degreeLevel);
+            if (degreeLevel == DegreeLevel.BACHELOR || degreeLevel == DegreeLevel.MASTER) {
+                // сортировка специальностей по тегам выбранных направлений
+                List<SpecialtyWithTags> tagged = new ArrayList<>(
+                        degreeLevel == DegreeLevel.BACHELOR
+                                ? BachelorSpecialtyTagsCatalog.load(this)
+                                : MasterSpecialtyTagsCatalog.load(this)
+                );
+                List<String> selectedDirections = UserSelectionStore.of(this)
+                        .get(SelectionPool.STUDY_DIRECTIONS);
+                Map<String, Integer> directionRank = new HashMap<>();
+                for (int i = 0; i < selectedDirections.size(); i++) {
+                    directionRank.put(selectedDirections.get(i), i);
+                }
+                tagged.sort((a, b) -> {
+                    int ra = bestTagRank(a.tags, directionRank);
+                    int rb = bestTagRank(b.tags, directionRank);
+                    if (ra != rb) {
+                        return Integer.compare(ra, rb);
+                    }
+                    return Integer.compare(a.sourceIndex, b.sourceIndex);
+                });
+                specialties = new ArrayList<>(tagged.size());
+                for (SpecialtyWithTags item : tagged) {
+                    specialties.add(item.specialty);
+                }
+            } else {
+                specialties = SpecialtyCatalog.load(this, degreeLevel);
+            }
         } catch (IOException e) {
             Toast.makeText(this, MSG_LOAD_ERROR, Toast.LENGTH_LONG).show();
             return;
@@ -126,6 +155,17 @@ public class SpecialityChooser4 extends StepActivity {
                     || row.specialty.getLabel().toLowerCase(Locale.getDefault()).contains(normalized);
             row.rowView.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private static int bestTagRank(@NonNull List<String> tags, @NonNull Map<String, Integer> directionRank) {
+        int best = Integer.MAX_VALUE;
+        for (String tag : tags) {
+            Integer rank = directionRank.get(tag);
+            if (rank != null && rank < best) {
+                best = rank;
+            }
+        }
+        return best;
     }
 
     @Nullable
