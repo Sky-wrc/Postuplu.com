@@ -19,9 +19,11 @@ import androidx.core.widget.CompoundButtonCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class UniversityChooser2 extends StepActivity {
@@ -48,13 +50,30 @@ public class UniversityChooser2 extends StepActivity {
             return;
         }
 
-        List<University> universities;
+        List<UniversityWithTags> universities;
         try {
-            universities = UniversityCatalog.load(this);
+            // UniversityTagsCatalog.load() возвращает неизменяемый список
+            universities = new ArrayList<>(UniversityTagsCatalog.load(this));
         } catch (IOException e) {
             Toast.makeText(this, MSG_LOAD_ERROR, Toast.LENGTH_LONG).show();
             return;
         }
+
+        List<String> selectedDirections = UserSelectionStore.of(this)
+                .get(SelectionPool.STUDY_DIRECTIONS);
+        Map<String, Integer> directionRank = new HashMap<>();
+        for (int i = 0; i < selectedDirections.size(); i++) {
+            directionRank.put(selectedDirections.get(i), i);
+        }
+        universities.sort((a, b) -> {
+            int ra = bestTagRank(a.tags, directionRank);
+            int rb = bestTagRank(b.tags, directionRank);
+            if (ra != rb) {
+                return Integer.compare(ra, rb);
+            }
+            // при равном ранге сохраняем исходный порядок из Universities+tags
+            return Integer.compare(a.sourceIndex, b.sourceIndex);
+        });
 
         LayoutInflater inflater = LayoutInflater.from(this);
         universityRows.clear();
@@ -63,7 +82,8 @@ public class UniversityChooser2 extends StepActivity {
         Set<String> saved = new HashSet<>(UserSelectionStore.of(this).get(SelectionPool.UNIVERSITIES));
         int restoredCount = 0;
 
-        for (University university : universities) {
+        for (UniversityWithTags item : universities) {
+            University university = item.university;
             View rowView = inflater.inflate(R.layout.item_university_row, container, false);
             CheckBox checkBox = rowView.findViewById(R.id.university_checkbox);
             Button infoButton = rowView.findViewById(R.id.university_info_button);
@@ -125,6 +145,17 @@ public class UniversityChooser2 extends StepActivity {
             boolean visible = normalized.isEmpty() || row.university.matchesSearch(normalized);
             row.rowView.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private static int bestTagRank(@NonNull List<String> tags, @NonNull Map<String, Integer> directionRank) {
+        int best = Integer.MAX_VALUE;
+        for (String tag : tags) {
+            Integer rank = directionRank.get(tag);
+            if (rank != null && rank < best) {
+                best = rank;
+            }
+        }
+        return best;
     }
 
     private void showUniversityInfo(@NonNull University university) {
