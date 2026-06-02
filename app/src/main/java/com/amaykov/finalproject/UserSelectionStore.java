@@ -70,7 +70,8 @@ public final class UserSelectionStore {
     }
 
     @NonNull
-    public Map<String, List<String>> snapshot() {
+    public Map<String, List<String>> snapshot() 
+    {
         JSONObject root = loadRootJson();
         Map<String, List<String>> map = new LinkedHashMap<>();
         Iterator<String> keys = root.keys();
@@ -104,6 +105,18 @@ public final class UserSelectionStore {
     public String getFirstValue(@NonNull SelectionPool pool) {
         List<String> values = get(pool);
         return values.isEmpty() ? null : values.get(0);
+    }
+
+    /**
+     * Снимок JSON выбора пользователя для сравнения отпечатка (кэш ответа нейросети).
+     */
+    @NonNull
+    public String getPoolsJsonSnapshot() {
+        String json = prefs.getString(KEY_POOLS_JSON, null);
+        if (json == null || json.isEmpty()) {
+            return "{}";
+        }
+        return json;
     }
 
     @NonNull

@@ -6,19 +6,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.ai.FirebaseAI;
 import com.google.firebase.ai.GenerativeModel;
 import com.google.firebase.ai.java.GenerativeModelFutures;
 import com.google.firebase.ai.type.Content;
+import com.google.firebase.ai.type.GenerateContentResponse;
 import com.google.firebase.ai.type.GenerativeBackend;
 
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "PREFS_NAME";
     private static final String KEY_FIRST_RUN = "isFirstRun";
+
+    private static final String AI_CACHE_PREFS = "ai_response_cache";
+    private static final String KEY_SELECTION_FINGERPRINT = "selection_fingerprint";
+    private static final String KEY_CACHED_RESPONSE = "cached_response_text";
 
     TextView mainText;
 
@@ -43,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
-        GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
-                .generativeModel("gemini-3.5-flash");
-        GenerativeModelFutures model = GenerativeModelFutures.from(ai);
-
         setContentView(R.layout.activity_main);
 
         View menuButton = findViewById(R.id.button3);
@@ -55,13 +61,56 @@ public class MainActivity extends AppCompatActivity {
             bindMainMenu(menuButton);
         }
         mainText = findViewById(R.id.main_text);
-        mainText.setText(buildNeuralNetworkPrompt());
 
-//        Content prompt = new Content.Builder()
-//                .addText()
-//                .build();
+        String selectionFingerprint = UserSelectionStore.of(this).getPoolsJsonSnapshot();
+        SharedPreferences aiCache = getSharedPreferences(AI_CACHE_PREFS, MODE_PRIVATE);
+        String cachedFingerprint = aiCache.getString(KEY_SELECTION_FINGERPRINT, null);
+        String cachedResponse = aiCache.getString(KEY_CACHED_RESPONSE, null);
+
+        if (selectionFingerprint.equals(cachedFingerprint)
+                && cachedResponse != null
+                && !cachedResponse.isEmpty()) {
+            mainText.setText(cachedResponse);
+            return;
+        }
+
+        mainText.setText("Загрузка ответа...");
+
+        GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
+                .generativeModel("gemini-3.5-flash");
+        GenerativeModelFutures model = GenerativeModelFutures.from(ai);
+
+        Content prompt = new Content.Builder()
+                .addText(buildNeuralNetworkPrompt())
+                .build();
+
+        ListenableFuture<GenerateContentResponse> response = model.generateContent(prompt);
+        Executor executor = ContextCompat.getMainExecutor(this);
+        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
+            @Override
+            public void onSuccess(GenerateContentResponse result) {
+                String resultText = result.getText();
+                if (resultText == null || resultText.isEmpty()) {
+                    mainText.setText("Пустой ответ от нейросети.");
+                    return;
+                }
+                mainText.setText(resultText);
+                aiCache.edit()
+                        .putString(KEY_SELECTION_FINGERPRINT, selectionFingerprint)
+                        .putString(KEY_CACHED_RESPONSE, resultText)
+                        .apply();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                mainText.setText("Соединение с мозговым центром не установленно...");
+            }
+        }, executor);
 
     }
+
+
+
 
     @NonNull
     public String buildNeuralNetworkPrompt() {
@@ -82,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 : (degreeLevel == DegreeLevel.MASTER ? "не применимо (магистратура)" : "не указано");
 
         StringBuilder prompt = new StringBuilder();
-        prompt.append("Ты — консультант по поступлению в вузы России. ")
+        prompt.append("Ты — консультант по поступлению в вузы России. В ответах не используй особо разметку и ")
+                .append("какие либо выделения в тексте, по типу ** или ####.")
                 .append("Отвечай на русском языке, опираясь на актуальные правила приёма 2026 года. ")
                 .append("Учитывай данные абитуриента ниже.\n\n");
 
