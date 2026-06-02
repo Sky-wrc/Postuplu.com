@@ -31,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private static final String PREFS_NAME = "PREFS_NAME";
-    private static final String KEY_FIRST_RUN = "isFirstRun";
-
     private static final String AI_CACHE_PREFS = "ai_response_cache";
     private static final String KEY_SELECTION_FINGERPRINT = "selection_fingerprint";
     private static final String KEY_CACHED_RESPONSE = "cached_response_text";
@@ -44,11 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isFirstRun = settings.getBoolean(KEY_FIRST_RUN, true);
         boolean hasAnySavedSelection = !UserSelectionStore.of(this).snapshot().isEmpty();
-        if (isFirstRun || !hasAnySavedSelection) {
-            settings.edit().putBoolean(KEY_FIRST_RUN, false).apply();
+        if (!hasAnySavedSelection) {
             startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             finish();
             return;
@@ -257,6 +251,11 @@ public class MainActivity extends AppCompatActivity {
         prompt.append("1. Какие сроки подачи документов в 2026 году для выбранных ВУЗов и специальностей.\n");
     }
 
+    private void clearAllUserData() {
+        UserSelectionStore.of(this).clear();
+        getSharedPreferences(AI_CACHE_PREFS, MODE_PRIVATE).edit().clear().apply();
+    }
+
     private void bindMainMenu(View anchor) {
         anchor.setOnClickListener(v -> {
             PopupMenu menu = new PopupMenu(this, anchor);
@@ -265,6 +264,14 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.menu_change_selection) {
                     startActivity(new Intent(this, OrientationChooser1.class));
+                    return true;
+                }
+                if (id == R.id.menu_clear_data) {
+                    clearAllUserData();
+                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                     return true;
                 }
                 if (id == R.id.menu_exit) {

@@ -39,7 +39,7 @@
                 android:layout_height="35dp"
                 android:shadowColor="@color/white"
                 android:shadowRadius="2"
-                android:text=" Советы по поступлению"
+                android:text="   Советы по поступлению"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/white"
                 android:textSize="25dp"

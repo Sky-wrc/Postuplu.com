@@ -4,6 +4,9 @@
         android:id="@+id/menu_change_selection"
         android:title="🔄️ Сменить свой выбор" />
     <item
+        android:id="@+id/menu_clear_data"
+        android:title="🗑️ Очистить данные" />
+    <item
         android:id="@+id/menu_exit"
         android:title="↩️ Выйти" />
 </menu>
