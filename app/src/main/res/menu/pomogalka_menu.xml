@@ -4,11 +4,11 @@
 
     <item
         android:id="@+id/inf_itm"
-        android:title="❓ Что я тут делаю?" />
+        android:title="❔ Что я тут делаю?" />
     <item
         android:id="@+id/back_itm"
-        android:title="🔙 Вернуться назад" />
+        android:title="⬅️ Вернуться назад" />
     <item
         android:id="@+id/exit_itm"
-        android:title="❎ Выйти" />
+        android:title="↩️ Выйти" />
 </menu>
