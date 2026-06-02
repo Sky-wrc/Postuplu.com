@@ -10,11 +10,11 @@
     <Button
         android:id="@+id/button3"
         android:layout_width="61dp"
-        android:layout_height="61dp"
+        android:layout_height="62dp"
         android:contentDescription="меню"
         android:text="|||"
         android:textColor="@color/white"
-        app:backgroundTint="#2A2C2C"
+        app:backgroundTint="@color/background"
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

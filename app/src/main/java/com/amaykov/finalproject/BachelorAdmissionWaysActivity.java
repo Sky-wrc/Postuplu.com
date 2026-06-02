@@ -18,7 +18,7 @@ public class BachelorAdmissionWaysActivity extends StepActivity {
 
     @Override
     protected int getStepLayoutResId() {
-        return R.layout.activity_bachelor_admission_ways;
+        return R.layout.activity_bachelor_admission_ways5;
     }
 
     @Override

@@ -2,7 +2,11 @@ package com.amaykov.finalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -96,5 +100,36 @@ public abstract class StepActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
         return intent;
+    }
+
+    /**
+     * Сбрасывает текущий выбор на экране (UI), не трогая сохранённые данные.
+     * Используется пунктом меню «Сбросить выбор».
+     */
+    public void resetCurrentSelections() {
+        View root = getWindow() != null ? getWindow().getDecorView() : null;
+        if (root != null) {
+            resetInViewTree(root);
+        }
+    }
+
+    private static void resetInViewTree(@NonNull View view) {
+        if (view instanceof CheckBox) {
+            ((CheckBox) view).setChecked(false);
+            return;
+        }
+        if (view instanceof RadioGroup) {
+            ((RadioGroup) view).clearCheck();
+            return;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                if (child != null) {
+                    resetInViewTree(child);
+                }
+            }
+        }
     }
 }

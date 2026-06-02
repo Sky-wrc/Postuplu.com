@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,13 @@ public final class HelpMenu {
                     activity.finish();
                 } else if (id == R.id.exit_itm) {
                     activity.finishAffinity();
+                } else if (id == R.id.reset_itm) {
+                    if (activity instanceof StepActivity) {
+                        ((StepActivity) activity).resetCurrentSelections();
+                        Toast.makeText(activity, "Выбор сброшен", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "Нечего сбрасывать на этом экране", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return true;
             });
