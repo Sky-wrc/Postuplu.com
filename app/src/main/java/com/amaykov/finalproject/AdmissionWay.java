@@ -5,11 +5,11 @@ import androidx.annotation.Nullable;
 
 public enum AdmissionWay {
     EGE_BUDGET("ege_budget", "ЕГЭ(бюджет)", R.id.radio_admission_ege_budget),
-    VI("vi", "ВИ", R.id.radio_admission_vi),
+    VI("vi", "ВИ/ДВИ", R.id.radio_admission_vi),
     BVI("bvi", "БВИ", R.id.radio_admission_bvi),
     TARGET("target", "Целевой набор", R.id.radio_admission_target),
     QUOTA("quota", "Квота/Льгота", R.id.radio_admission_quota),
-    EGE_PAID("ege_paid", "ЕГЭ(платка)", R.id.radio_admission_ege_paid);
+    EGE_PAID("ege_paid", "ЕГЭ(платное)", R.id.radio_admission_ege_paid);
 
     private final String storageKey;
     private final String displayLabel;
