@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="background">#212323</color>
-    <color name="primary">#345B5D</color>
-    <color name="checkbox_control">#7FD1C8</color>
+    <color name="primary">#747C7C</color>
+<!--    <color name="checkbox_control">#7FD1C8</color>-->
 
 </resources>

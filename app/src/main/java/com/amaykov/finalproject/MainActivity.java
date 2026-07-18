@@ -3,9 +3,14 @@ package com.amaykov.finalproject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -17,25 +22,58 @@ import com.google.firebase.ai.java.GenerativeModelFutures;
 import com.google.firebase.ai.type.Content;
 import com.google.firebase.ai.type.GenerateContentResponse;
 import com.google.firebase.ai.type.GenerativeBackend;
-
-
+import com.google.firebase.ai.type.UsageMetadata;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
+    private static final String TAG = "MainActivityAI";
     private static final String AI_CACHE_PREFS = "ai_response_cache";
     private static final String KEY_SELECTION_FINGERPRINT = "selection_fingerprint";
+    private static final String KEY_CACHED_CHAT = "cached_chat_json";
     private static final String KEY_CACHED_RESPONSE = "cached_response_text";
 
-    TextView mainText;
+    private static final int MAX_AUTO_RETRIES = 2;
+    private static final long[] RETRY_BACKOFF_MS = {1000L, 3000L};
+
+    private enum PendingRequestKind {
+        INITIAL,
+        FOLLOW_UP
+    }
+
+    private ChatAdapter chatAdapter;
+    private RecyclerView chatList;
+    private EditText chatInput;
+    private Button chatSend;
+    private GenerativeModelFutures model;
+    private String selectionFingerprint;
+    private SharedPreferences aiCache;
+    private boolean waitingForResponse;
+
+    private PendingRequestKind pendingKind = PendingRequestKind.INITIAL;
+    @Nullable
+    private String pendingFollowUpText;
+    private int autoRetryAttempt;
+    private boolean useSlimPayload;
+
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    @Nullable
+    private Runnable scheduledRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,57 +92,363 @@ public class MainActivity extends AppCompatActivity {
         if (menuButton != null) {
             bindMainMenu(menuButton);
         }
-        mainText = findViewById(R.id.main_text);
 
-        String selectionFingerprint = UserSelectionStore.of(this).getPoolsJsonSnapshot();
-        SharedPreferences aiCache = getSharedPreferences(AI_CACHE_PREFS, MODE_PRIVATE);
-        String cachedFingerprint = aiCache.getString(KEY_SELECTION_FINGERPRINT, null);
-        String cachedResponse = aiCache.getString(KEY_CACHED_RESPONSE, null);
+        chatList = findViewById(R.id.chat_list);
+        chatInput = findViewById(R.id.chat_input);
+        chatSend = findViewById(R.id.chat_send);
 
-        if (selectionFingerprint.equals(cachedFingerprint)
-                && cachedResponse != null
-                && !cachedResponse.isEmpty()) {
-            mainText.setText(cachedResponse);
-            return;
-        }
+        chatAdapter = new ChatAdapter();
+        chatAdapter.setRetryClickListener(this::onManualRetry);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        chatList.setLayoutManager(layoutManager);
+        chatList.setAdapter(chatAdapter);
 
-        mainText.setText("Загрузка ответа...");
+        selectionFingerprint = UserSelectionStore.of(this).getPoolsJsonSnapshot();
+        aiCache = getSharedPreferences(AI_CACHE_PREFS, MODE_PRIVATE);
 
         GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
                 .generativeModel("gemini-3.5-flash");
-        GenerativeModelFutures model = GenerativeModelFutures.from(ai);
+        model = GenerativeModelFutures.from(ai);
 
-        Content prompt = new Content.Builder()
-                .addText(buildNeuralNetworkPrompt())
-                .build();
+        chatSend.setOnClickListener(v -> sendUserMessage());
+        chatInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                sendUserMessage();
+                return true;
+            }
+            return false;
+        });
 
+        List<ChatMessage> cachedChat = loadCachedChat();
+        String cachedFingerprint = aiCache.getString(KEY_SELECTION_FINGERPRINT, null);
+        if (selectionFingerprint.equals(cachedFingerprint) && !cachedChat.isEmpty()) {
+            chatAdapter.setMessages(cachedChat);
+            scrollToBottom();
+            return;
+        }
+
+        startInitialAdvice();
+    }
+
+    @Override
+    protected void onDestroy() {
+        cancelScheduledRetry();
+        super.onDestroy();
+    }
+
+    private void startInitialAdvice() {
+        pendingKind = PendingRequestKind.INITIAL;
+        pendingFollowUpText = null;
+        autoRetryAttempt = 0;
+        useSlimPayload = false;
+        setInputEnabled(false);
+        chatAdapter.addMessage(new ChatMessage(ChatMessage.Role.AI, "Загрузка ответа..."));
+        scrollToBottom();
+        executePendingRequest();
+    }
+
+    private void sendUserMessage() {
+        if (waitingForResponse) {
+            return;
+        }
+        String text = chatInput.getText() != null ? chatInput.getText().toString().trim() : "";
+        if (text.isEmpty()) {
+            return;
+        }
+
+        chatInput.setText("");
+        pendingKind = PendingRequestKind.FOLLOW_UP;
+        pendingFollowUpText = text;
+        autoRetryAttempt = 0;
+        useSlimPayload = true;
+
+        chatAdapter.addMessage(new ChatMessage(ChatMessage.Role.USER, text));
+        chatAdapter.addMessage(new ChatMessage(ChatMessage.Role.AI, "Думаю..."));
+        scrollToBottom();
+        setInputEnabled(false);
+        executePendingRequest();
+    }
+
+    private void onManualRetry() {
+        if (waitingForResponse) {
+            return;
+        }
+        cancelScheduledRetry();
+        autoRetryAttempt = 0;
+        useSlimPayload = true;
+        setInputEnabled(false);
+        chatAdapter.updateLastMessage(new ChatMessage(
+                ChatMessage.Role.AI,
+                pendingKind == PendingRequestKind.INITIAL ? "Загрузка ответа..." : "Думаю...",
+                false,
+                null,
+                null
+        ));
+        scrollToBottom();
+        executePendingRequest();
+    }
+
+    private void executePendingRequest() {
+        Content prompt = buildRequestContent();
         ListenableFuture<GenerateContentResponse> response = model.generateContent(prompt);
         Executor executor = ContextCompat.getMainExecutor(this);
         Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
+                Integer promptTokens = null;
+                Integer candidateTokens = null;
+                UsageMetadata usage = result.getUsageMetadata();
+                if (usage != null) {
+                    promptTokens = usage.getPromptTokenCount();
+                    candidateTokens = usage.getCandidatesTokenCount();
+                    Log.i(TAG, "promptTokenCount=" + promptTokens
+                            + ", candidatesTokenCount=" + candidateTokens);
+                }
+
                 String resultText = result.getText();
                 if (resultText == null || resultText.isEmpty()) {
-                    mainText.setText("Мозговой центр не дал ответа");
+                    handleRequestFailure(new IllegalStateException("empty_response"), promptTokens, candidateTokens);
                     return;
                 }
-                mainText.setText(resultText);
-                aiCache.edit()
-                        .putString(KEY_SELECTION_FINGERPRINT, selectionFingerprint)
-                        .putString(KEY_CACHED_RESPONSE, resultText)
-                        .apply();
+                chatAdapter.updateLastMessage(new ChatMessage(
+                        ChatMessage.Role.AI,
+                        resultText,
+                        false,
+                        promptTokens,
+                        candidateTokens
+                ));
+                saveChatCache();
+                setInputEnabled(true);
+                scrollToBottom();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                mainText.setText("Соединение с мозговым центром не установленно...");
+                handleRequestFailure(t, null, null);
             }
         }, executor);
-
     }
 
+    private void handleRequestFailure(
+            @NonNull Throwable t,
+            @Nullable Integer promptTokens,
+            @Nullable Integer candidateTokens) {
+        Log.w(TAG, "AI request failed (attempt=" + autoRetryAttempt + ")", t);
 
+        if (autoRetryAttempt < MAX_AUTO_RETRIES) {
+            long delayMs = RETRY_BACKOFF_MS[Math.min(autoRetryAttempt, RETRY_BACKOFF_MS.length - 1)];
+            autoRetryAttempt++;
+            useSlimPayload = true;
+            chatAdapter.updateLastMessage(new ChatMessage(
+                    ChatMessage.Role.AI,
+                    "Сервис недоступен. Повтор через " + (delayMs / 1000) + " с (попытка "
+                            + autoRetryAttempt + "/" + MAX_AUTO_RETRIES + ")...",
+                    false,
+                    promptTokens,
+                    candidateTokens
+            ));
+            scrollToBottom();
+            cancelScheduledRetry();
+            scheduledRetry = this::executePendingRequest;
+            mainHandler.postDelayed(scheduledRetry, delayMs);
+            return;
+        }
 
+        String errorMessage = mapFailureMessage(t);
+        chatAdapter.updateLastMessage(new ChatMessage(
+                ChatMessage.Role.AI,
+                errorMessage,
+                true,
+                promptTokens,
+                candidateTokens
+        ));
+        setInputEnabled(true);
+        scrollToBottom();
+    }
+
+    @NonNull
+    private Content buildRequestContent() {
+        if (useSlimPayload || pendingKind == PendingRequestKind.FOLLOW_UP) {
+            StringBuilder slim = new StringBuilder(buildUserProfileSummary());
+            if (pendingKind == PendingRequestKind.FOLLOW_UP && pendingFollowUpText != null) {
+                slim.append("\nВопрос пользователя:\n")
+                        .append(pendingFollowUpText);
+            } else {
+                slim.append("\nДай практичные советы по поступлению по этому резюме на 2026 год.");
+            }
+            slim.append("\nОтветь кратко и по делу на русском, без лишней разметки.");
+            slim.append("Опирайся только на проверенные данные с официальных сайтов, и желательно предоставляй источники в виде названий этих сайтов.");
+            return new Content.Builder()
+                    .setRole("user")
+                    .addText(slim.toString())
+                    .build();
+        }
+        return new Content.Builder()
+                .setRole("user")
+                .addText(buildNeuralNetworkPrompt())
+                .build();
+    }
+
+    @NonNull
+    private String mapFailureMessage(@NonNull Throwable t) {
+        String raw = collectErrorText(t).toLowerCase(Locale.ROOT);
+        if (raw.contains("high demand")
+                || raw.contains("overloaded")
+                || raw.contains("unavailable")
+                || raw.contains("preempted")
+                || raw.contains("too many retries")
+                || raw.contains("decode_preempted")) {
+            return "Мозговой центр сейчас перегружен. Нажмите «Повторить» чуть позже.";
+        }
+        if (raw.contains("empty_response")) {
+            return "Мозговой центр не дал ответа. Нажмите «Повторить».";
+        }
+        if (raw.contains("unable to resolve host")
+                || raw.contains("failed to connect")
+                || raw.contains("timeout")
+                || raw.contains("network")
+                || raw.contains("unknownhost")
+                || raw.contains("socket")) {
+            return "Нет соединения с сетью. Проверьте интернет и нажмите «Повторить».";
+        }
+        return "Не удалось получить ответ от мозгового центра. Нажмите «Повторить».";
+    }
+
+    @NonNull
+    private static String collectErrorText(@NonNull Throwable t) {
+        StringBuilder sb = new StringBuilder();
+        Throwable current = t;
+        while (current != null) {
+            if (current.getMessage() != null) {
+                sb.append(current.getMessage()).append(' ');
+            }
+            current = current.getCause();
+        }
+        return sb.toString();
+    }
+
+    private void cancelScheduledRetry() {
+        if (scheduledRetry != null) {
+            mainHandler.removeCallbacks(scheduledRetry);
+            scheduledRetry = null;
+        }
+    }
+
+    private void setInputEnabled(boolean enabled) {
+        waitingForResponse = !enabled;
+        chatInput.setEnabled(enabled);
+        chatSend.setEnabled(enabled);
+    }
+
+    private void scrollToBottom() {
+        int count = chatAdapter.getItemCount();
+        if (count > 0) {
+            chatList.post(() -> chatList.smoothScrollToPosition(count - 1));
+        }
+    }
+
+    private void saveChatCache() {
+        JSONArray array = new JSONArray();
+        for (ChatMessage message : chatAdapter.getMessages()) {
+            if (message.showRetry) {
+                continue;
+            }
+            if ("Загрузка ответа...".equals(message.text)
+                    || "Думаю...".equals(message.text)
+                    || message.text.startsWith("Мозговой центр не отзывается (нет доступа). Повтор")) {
+                continue;
+            }
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("role", message.role == ChatMessage.Role.USER ? "user" : "ai");
+                obj.put("text", message.text);
+                if (message.promptTokenCount != null) {
+                    obj.put("promptTokenCount", message.promptTokenCount);
+                }
+                if (message.candidatesTokenCount != null) {
+                    obj.put("candidatesTokenCount", message.candidatesTokenCount);
+                }
+                array.put(obj);
+            } catch (JSONException ignored) {
+            }
+        }
+        aiCache.edit()
+                .putString(KEY_SELECTION_FINGERPRINT, selectionFingerprint)
+                .putString(KEY_CACHED_CHAT, array.toString())
+                .remove(KEY_CACHED_RESPONSE)
+                .apply();
+    }
+
+    @NonNull
+    private List<ChatMessage> loadCachedChat() {
+        List<ChatMessage> result = new ArrayList<>();
+        String json = aiCache.getString(KEY_CACHED_CHAT, null);
+        if (json == null || json.isEmpty()) {
+            String legacy = aiCache.getString(KEY_CACHED_RESPONSE, null);
+            if (legacy != null && !legacy.isEmpty()) {
+                result.add(new ChatMessage(ChatMessage.Role.AI, legacy));
+            }
+            return result;
+        }
+        try {
+            JSONArray array = new JSONArray(json);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                String role = obj.optString("role", "ai");
+                String text = obj.optString("text", "");
+                if (text.isEmpty()) {
+                    continue;
+                }
+                Integer promptTokens = obj.has("promptTokenCount") ? obj.optInt("promptTokenCount") : null;
+                Integer candidateTokens = obj.has("candidatesTokenCount")
+                        ? obj.optInt("candidatesTokenCount")
+                        : null;
+                result.add(new ChatMessage(
+                        "user".equals(role) ? ChatMessage.Role.USER : ChatMessage.Role.AI,
+                        text,
+                        false,
+                        promptTokens,
+                        candidateTokens
+                ));
+            }
+        } catch (JSONException ignored) {
+        }
+        return result;
+    }
+
+    @NonNull
+    private String buildUserProfileSummary() {
+        UserSelectionStore store = UserSelectionStore.of(this);
+        List<String> directions = store.get(SelectionPool.STUDY_DIRECTIONS);
+        List<String> universities = store.get(SelectionPool.UNIVERSITIES);
+        List<String> specialties = store.get(SelectionPool.SPECIALTIES);
+        String degreeKey = store.getFirstValue(SelectionPool.DEGREE);
+        DegreeLevel degreeLevel = DegreeLevel.fromStorageKey(degreeKey);
+        String degreeLabel = degreeLevel != null ? degreeLevel.getDisplayLabel() : "не указано";
+        String admissionKey = store.getFirstValue(SelectionPool.BACHELOR_ADMISSION_WAY);
+        AdmissionWay admissionWay = AdmissionWay.fromStorageKey(admissionKey);
+        String admissionLabel = admissionWay != null
+                ? admissionWay.getDisplayLabel()
+                : (degreeLevel == DegreeLevel.MASTER ? "не применимо (магистратура)" : "не указано");
+
+        StringBuilder summary = new StringBuilder();
+        summary.append("Ты — консультант по поступлению в вузы России. ")
+                .append("Отвечай на русском без markdown-разметки. ")
+                .append("Краткое резюме абитуриента:\n");
+        summary.append("Направления: ")
+                .append(directions.isEmpty() ? "не указаны" : String.join(", ", directions))
+                .append('\n');
+        summary.append("ВУЗы: ")
+                .append(universities.isEmpty() ? "не указаны" : String.join(", ", universities))
+                .append('\n');
+        summary.append("Ступень: ").append(degreeLabel).append('\n');
+        summary.append("Специальности: ")
+                .append(specialties.isEmpty() ? "не указаны" : String.join(", ", specialties))
+                .append('\n');
+        summary.append("Способ поступления: ").append(admissionLabel);
+        return summary.toString();
+    }
 
     @NonNull
     public String buildNeuralNetworkPrompt() {
@@ -128,6 +472,7 @@ public class MainActivity extends AppCompatActivity {
         prompt.append("Ты — консультант по поступлению в вузы России. В ответах не используй особо разметку и ")
                 .append("какие либо выделения в тексте, по типу ** или ####.")
                 .append("Отвечай на русском языке, опираясь на актуальные правила приёма 2026 года. ")
+                .append("Опирайся только на проверенные данные с официальных сайтов, и желательно предоставляй источники в виде названий этих сайтов. ")
                 .append("Учитывай данные абитуриента ниже.\n\n");
 
         prompt.append("=== Данные абитуриента ===\n\n");
