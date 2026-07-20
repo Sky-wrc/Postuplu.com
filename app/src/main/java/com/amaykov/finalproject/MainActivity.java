@@ -101,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
         chatAdapter.setRetryClickListener(this::onManualRetry);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
+        layoutManager.setSmoothScrollbarEnabled(false);
         chatList.setLayoutManager(layoutManager);
+        chatList.setHasFixedSize(false);
+        chatList.setItemViewCacheSize(24);
+        chatList.setItemAnimator(null);
         chatList.setAdapter(chatAdapter);
 
         selectionFingerprint = UserSelectionStore.of(this).getPoolsJsonSnapshot();
@@ -344,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
     private void scrollToBottom() {
         int count = chatAdapter.getItemCount();
         if (count > 0) {
-            chatList.post(() -> chatList.smoothScrollToPosition(count - 1));
+            chatList.post(() -> chatList.scrollToPosition(count - 1));
         }
     }
 

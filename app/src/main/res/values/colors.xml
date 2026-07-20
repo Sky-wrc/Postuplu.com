@@ -6,6 +6,8 @@
     <color name="background">#212323</color>
     <color name="primary">#747C7C</color>
     <color name="link_blue">#798EFA</color>
+    <color name="ripple_light">#33000000</color>
+    <color name="ripple_dark">#33FFFFFF</color>
 <!--    <color name="checkbox_control">#7FD1C8</color>-->
 
 </resources>
