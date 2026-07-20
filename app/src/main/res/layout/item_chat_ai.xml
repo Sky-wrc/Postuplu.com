@@ -13,7 +13,11 @@
         android:id="@+id/message_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:linksClickable="true"
         android:textColor="@color/white"
+        android:textColorLink="@color/link_blue"
+        android:textIsSelectable="true"
         android:textSize="15sp" />
 
     <TextView

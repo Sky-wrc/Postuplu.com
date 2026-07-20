@@ -1,5 +1,7 @@
 package com.amaykov.finalproject;
 
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -105,6 +108,18 @@ public final class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return messages.size();
     }
 
+    private static void bindSelectableLinkedText(@NonNull TextView messageText, @NonNull String text) {
+        messageText.setText(text);
+        Linkify.addLinks(messageText, Linkify.WEB_URLS);
+        messageText.setLinkTextColor(
+                ContextCompat.getColor(messageText.getContext(), R.color.link_blue));
+        messageText.setMovementMethod(LinkMovementMethod.getInstance());
+        messageText.setTextIsSelectable(true);
+        messageText.setFocusable(true);
+        messageText.setLongClickable(true);
+        messageText.setLinksClickable(true);
+    }
+
     static final class UserViewHolder extends RecyclerView.ViewHolder {
         private final TextView messageText;
 
@@ -114,7 +129,7 @@ public final class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         void bind(@NonNull ChatMessage message) {
-            messageText.setText(message.text);
+            bindSelectableLinkedText(messageText, message.text);
         }
     }
 
@@ -131,7 +146,7 @@ public final class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         void bind(@NonNull ChatMessage message, @Nullable RetryClickListener listener) {
-            messageText.setText(message.text);
+            bindSelectableLinkedText(messageText, message.text);
             if (message.promptTokenCount != null || message.candidatesTokenCount != null) {
                 int prompt = message.promptTokenCount != null ? message.promptTokenCount : 0;
                 int candidates = message.candidatesTokenCount != null ? message.candidatesTokenCount : 0;

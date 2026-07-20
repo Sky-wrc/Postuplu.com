@@ -12,8 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:autoLink="web"
         android:background="@drawable/bg_chat_user_bubble"
+        android:linksClickable="true"
         android:padding="12dp"
         android:textColor="@color/white"
+        android:textColorLink="@color/link_blue"
+        android:textIsSelectable="true"
         android:textSize="15sp" />
 </FrameLayout>
