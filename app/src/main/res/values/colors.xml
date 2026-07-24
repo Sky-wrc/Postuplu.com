@@ -4,10 +4,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="background">#212323</color>
-    <color name="primary">#747C7C</color>
+    <color name="ic_launcher_background">#212323</color>
+    <color name="surface">#2A2E2E</color>
+    <color name="primary">#5A6A6A</color>
+    <color name="accent">#4A9B8C</color>
     <color name="link_blue">#798EFA</color>
     <color name="ripple_light">#33000000</color>
     <color name="ripple_dark">#33FFFFFF</color>
-<!--    <color name="checkbox_control">#7FD1C8</color>-->
-
 </resources>

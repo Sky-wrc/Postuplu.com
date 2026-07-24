@@ -28,14 +28,11 @@ import java.util.Set;
 
 public class UniversityChooser2 extends StepActivity {
 
-    private static final int MAX_UNIVERSITIES = 5;
     private static final String MSG_LOAD_ERROR = "Не удалось загрузить список вузов";
-    private static final String MSG_MAX_UNIVERSITIES = "Можно выбрать не больше 5 вузов.";
     private static final String INFO_DIALOG_TITLE = "О вузе";
     private static final String INFO_BUTTON_DESCRIPTION = "Подробнее о вузе";
 
     private final List<UniversityRow> universityRows = new ArrayList<>();
-    private final List<CheckBox> universityCheckBoxes = new ArrayList<>();
 
     @Override
     protected int getStepLayoutResId() {
@@ -75,10 +72,8 @@ public class UniversityChooser2 extends StepActivity {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         universityRows.clear();
-        universityCheckBoxes.clear();
         container.removeAllViews();
         Set<String> saved = new HashSet<>(UserSelectionStore.of(this).get(SelectionPool.UNIVERSITIES));
-        int restoredCount = 0;
 
         for (UniversityWithTags item : universities) {
             University university = item.university;
@@ -91,31 +86,13 @@ public class UniversityChooser2 extends StepActivity {
 
             checkBox.setText(university.getAbbreviation());
             CompoundButtonCompat.setButtonTintList(checkBox, null);
-            boolean restore = SelectionLimitHelper.shouldRestoreAsChecked(
-                    saved.contains(university.getAbbreviation()),
-                    restoredCount,
-                    MAX_UNIVERSITIES
-            );
-            checkBox.setChecked(restore);
-            if (restore) {
-                restoredCount++;
-            }
+            checkBox.setChecked(saved.contains(university.getAbbreviation()));
 
             infoButton.setContentDescription(INFO_BUTTON_DESCRIPTION);
             infoButton.setOnClickListener(v -> showUniversityInfo(university));
 
             container.addView(rowView);
             universityRows.add(new UniversityRow(university, checkBox, rowView));
-            universityCheckBoxes.add(checkBox);
-        }
-
-        for (CheckBox checkBox : universityCheckBoxes) {
-            SelectionLimitHelper.bindMaxSelection(
-                    checkBox,
-                    universityCheckBoxes,
-                    MAX_UNIVERSITIES,
-                    MSG_MAX_UNIVERSITIES
-            );
         }
 
         EditText searchField = findViewById(R.id.university_search);

@@ -25,21 +25,21 @@
 
             <Button
                 android:id="@+id/button3"
-                android:layout_width="61dp"
-                android:layout_height="61dp"
+                style="@style/Widget.Postuplu.Button.Ghost"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="кнопка помощи"
-                android:text="|||"
-                android:textColor="@color/white"
-                android:visibility="visible"
-                app:backgroundTint="@color/background"
-                app:cornerRadius="0dp"
+                android:minWidth="0dp"
+                android:text="⋮"
+                android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="70dp" />
+            android:layout_height="24dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -48,7 +48,7 @@
             android:gravity="center"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="22sp" />
 
         <Space
             android:layout_width="match_parent"
@@ -94,10 +94,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/black"
+            style="@style/Widget.Postuplu.Button"
             android:contentDescription="кнопка перехода дальше"
             android:text=""
-            android:textColor="@color/white"
             android:textSize="20sp" />
 
     </LinearLayout>

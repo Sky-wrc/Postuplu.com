@@ -3,22 +3,20 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
 
-        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/accent</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/primary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorTertiary">@color/primary</item>
+        <item name="colorTertiary">@color/accent</item>
         <item name="colorOnTertiary">@color/white</item>
-        <item name="colorSurface">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/white</item>
 
         <item name="colorControlHighlight">@color/ripple_dark</item>
         <item name="android:colorControlHighlight">@color/ripple_dark</item>
-        <item name="materialButtonStyle">@style/Widget.Postuplu.Button.Dark</item>
-    </style>
-
-    <style name="Widget.Postuplu.Button.Dark" parent="Widget.Material3.Button">
-        <item name="rippleColor">@color/ripple_dark</item>
+        <item name="materialButtonStyle">@style/Widget.Postuplu.Button</item>
     </style>
 </resources>
