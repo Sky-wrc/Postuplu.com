@@ -108,51 +108,51 @@ public final class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private static void configureMessageTextOnce(@NonNull TextView messageText) {
-        messageText.setLinkTextColor(
-                ContextCompat.getColor(messageText.getContext(), R.color.link_blue));
-        messageText.setMovementMethod(ScrollFriendlyLinkMovementMethod.getInstance());
-        messageText.setTextIsSelectable(true);
-        messageText.setFocusable(true);
-        messageText.setLongClickable(true);
-        messageText.setLinksClickable(true);
-    }
-
-    private static void bindMessageText(@NonNull TextView messageText, @NonNull String text) {
-        messageText.setText(text);
-        Linkify.addLinks(messageText, Linkify.WEB_URLS);
-    }
-
-    static final class UserViewHolder extends RecyclerView.ViewHolder {
-        private final TextView messageText;
-
-        UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            messageText = itemView.findViewById(R.id.message_text);
-            configureMessageTextOnce(messageText);
+            messageText.setLinkTextColor(
+                    ContextCompat.getColor(messageText.getContext(), R.color.link_blue));
+            messageText.setMovementMethod(ScrollFriendlyLinkMovementMethod.getInstance());
+            messageText.setTextIsSelectable(true);
+            messageText.setFocusable(true);
+            messageText.setLongClickable(true);
+            messageText.setLinksClickable(true);
         }
 
-        void bind(@NonNull ChatMessage message) {
-            bindMessageText(messageText, message.text);
-        }
-    }
-
-    static final class AiViewHolder extends RecyclerView.ViewHolder {
-        private final TextView messageText;
-        private final TextView tokenUsageText;
-        private final Button retryButton;
-
-        AiViewHolder(@NonNull View itemView) {
-            super(itemView);
-            messageText = itemView.findViewById(R.id.message_text);
-            tokenUsageText = itemView.findViewById(R.id.token_usage_text);
-            retryButton = itemView.findViewById(R.id.retry_button);
-            configureMessageTextOnce(messageText);
+        private static void bindMessageText(@NonNull TextView messageText, @NonNull String text) {
+            messageText.setText(text);
+            Linkify.addLinks(messageText, Linkify.WEB_URLS);
         }
 
-        void bind(@NonNull ChatMessage message, @Nullable RetryClickListener listener) {
-            bindMessageText(messageText, message.text);
-            if (message.promptTokenCount != null || message.candidatesTokenCount != null) {
-                int prompt = message.promptTokenCount != null ? message.promptTokenCount : 0;
+        static final class UserViewHolder extends RecyclerView.ViewHolder {
+            private final TextView messageText;
+
+            UserViewHolder(@NonNull View itemView) {
+                super(itemView);
+                messageText = itemView.findViewById(R.id.message_text);
+                configureMessageTextOnce(messageText);
+            }
+
+            void bind(@NonNull ChatMessage message) {
+                bindMessageText(messageText, message.text);
+            }
+        }
+
+        static final class AiViewHolder extends RecyclerView.ViewHolder {
+            private final TextView messageText;
+            private final TextView tokenUsageText;
+            private final Button retryButton;
+
+            AiViewHolder(@NonNull View itemView) {
+                super(itemView);
+                messageText = itemView.findViewById(R.id.message_text);
+                tokenUsageText = itemView.findViewById(R.id.token_usage_text);
+                retryButton = itemView.findViewById(R.id.retry_button);
+                configureMessageTextOnce(messageText);
+            }
+
+            void bind(@NonNull ChatMessage message, @Nullable RetryClickListener listener) {
+                bindMessageText(messageText, message.text);
+                if (message.promptTokenCount != null || message.candidatesTokenCount != null) {
+                    int prompt = message.promptTokenCount != null ? message.promptTokenCount : 0;
                 int candidates = message.candidatesTokenCount != null ? message.candidatesTokenCount : 0;
                 tokenUsageText.setVisibility(View.VISIBLE);
                 tokenUsageText.setText(

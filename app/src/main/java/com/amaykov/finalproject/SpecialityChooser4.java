@@ -26,13 +26,10 @@ import java.util.Set;
 
 public class SpecialityChooser4 extends StepActivity {
 
-    private static final int MAX_SPECIALTIES = 5;
     private static final String MSG_LOAD_ERROR = "Не удалось загрузить список специальностей";
     private static final String MSG_DEGREE_MISSING = "Сначала выбери ступень обучения";
-    private static final String MSG_MAX_SPECIALTIES = "Можно выбрать не больше 5 специальностей.";
 
     private final List<SpecialtyRow> specialtyRows = new ArrayList<>();
-    private final List<CheckBox> specialtyCheckBoxes = new ArrayList<>();
 
     @Override
     protected int getStepLayoutResId() {
@@ -90,10 +87,8 @@ public class SpecialityChooser4 extends StepActivity {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         specialtyRows.clear();
-        specialtyCheckBoxes.clear();
         container.removeAllViews();
         Set<String> saved = new HashSet<>(UserSelectionStore.of(this).get(SelectionPool.SPECIALTIES));
-        int restoredCount = 0;
 
         for (Specialty specialty : specialties) {
             View rowView = inflater.inflate(R.layout.item_specialty_row, container, false);
@@ -104,28 +99,10 @@ public class SpecialityChooser4 extends StepActivity {
 
             checkBox.setText(specialty.getLabel());
             CompoundButtonCompat.setButtonTintList(checkBox, null);
-            boolean restore = SelectionLimitHelper.shouldRestoreAsChecked(
-                    saved.contains(specialty.getLabel()),
-                    restoredCount,
-                    MAX_SPECIALTIES
-            );
-            checkBox.setChecked(restore);
-            if (restore) {
-                restoredCount++;
-            }
+            checkBox.setChecked(saved.contains(specialty.getLabel()));
 
             container.addView(rowView);
             specialtyRows.add(new SpecialtyRow(specialty, checkBox, rowView));
-            specialtyCheckBoxes.add(checkBox);
-        }
-
-        for (CheckBox checkBox : specialtyCheckBoxes) {
-            SelectionLimitHelper.bindMaxSelection(
-                    checkBox,
-                    specialtyCheckBoxes,
-                    MAX_SPECIALTIES,
-                    MSG_MAX_SPECIALTIES
-            );
         }
 
         EditText searchField = findViewById(R.id.specialty_search);

@@ -29,7 +29,8 @@
             android:textColor="@color/white"
             android:shadowColor="@color/white"
             android:shadowRadius="2"
-            android:text=""
+            android:text="я люблю разных сучек"
+            android:fontFamily="sans-serif-black"
             android:textSize="30sp" />
 
         <Space
