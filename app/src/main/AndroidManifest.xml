@@ -8,9 +8,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@mipmap/ic_postuplu"
         android:label="Postuplu.com"
-        android:roundIcon="@drawable/ic_launcher_foreground"
+        android:roundIcon="@mipmap/ic_postuplu_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Postuplucom">
         <activity
@@ -37,7 +37,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:icon="@mipmap/ic_postuplu"
+            android:roundIcon="@mipmap/ic_postuplu_round">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
