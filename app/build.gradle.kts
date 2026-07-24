@@ -15,8 +15,8 @@ android {
         applicationId = "com.amaykov.finalproject"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.3"
+        versionCode = 7
+        versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

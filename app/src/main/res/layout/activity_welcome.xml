@@ -29,7 +29,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_launcher_full" />
+            android:src="@drawable/ic_launcher_postuplu_2" />
 
         <TextView
             android:layout_width="match_parent"
