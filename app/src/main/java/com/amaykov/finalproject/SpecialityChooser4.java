@@ -2,12 +2,9 @@ package com.amaykov.finalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -17,19 +14,19 @@ import androidx.core.widget.CompoundButtonCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 public class SpecialityChooser4 extends StepActivity {
 
+    private static final int MAX_SPECIALTIES = 5;
     private static final String MSG_LOAD_ERROR = "Не удалось загрузить список специальностей";
     private static final String MSG_DEGREE_MISSING = "Сначала выбери ступень обучения";
+    private static final String MSG_MAX_SPECIALTIES = "Можно выбрать не больше 5 специальностей.";
 
     private final List<SpecialtyRow> specialtyRows = new ArrayList<>();
+    private final List<CheckBox> specialtyCheckBoxes = new ArrayList<>();
 
     @Override
     protected int getStepLayoutResId() {
@@ -53,33 +50,7 @@ public class SpecialityChooser4 extends StepActivity {
 
         List<Specialty> specialties;
         try {
-            if (degreeLevel == DegreeLevel.BACHELOR || degreeLevel == DegreeLevel.MASTER) {
-                List<SpecialtyWithTags> tagged = new ArrayList<>(
-                        degreeLevel == DegreeLevel.BACHELOR
-                                ? BachelorSpecialtyTagsCatalog.load(this)
-                                : MasterSpecialtyTagsCatalog.load(this)
-                );
-                List<String> selectedDirections = UserSelectionStore.of(this)
-                        .get(SelectionPool.STUDY_DIRECTIONS);
-                Map<String, Integer> directionRank = new HashMap<>();
-                for (int i = 0; i < selectedDirections.size(); i++) {
-                    directionRank.put(selectedDirections.get(i), i);
-                }
-                tagged.sort((a, b) -> {
-                    int ra = bestTagRank(a.tags, directionRank);
-                    int rb = bestTagRank(b.tags, directionRank);
-                    if (ra != rb) {
-                        return Integer.compare(ra, rb);
-                    }
-                    return Integer.compare(a.sourceIndex, b.sourceIndex);
-                });
-                specialties = new ArrayList<>(tagged.size());
-                for (SpecialtyWithTags item : tagged) {
-                    specialties.add(item.specialty);
-                }
-            } else {
-                specialties = SpecialtyCatalog.load(this, degreeLevel);
-            }
+            specialties = SpecialtyCatalog.load(this, degreeLevel);
         } catch (IOException e) {
             Toast.makeText(this, MSG_LOAD_ERROR, Toast.LENGTH_LONG).show();
             return;
@@ -87,8 +58,10 @@ public class SpecialityChooser4 extends StepActivity {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         specialtyRows.clear();
+        specialtyCheckBoxes.clear();
         container.removeAllViews();
         Set<String> saved = new HashSet<>(UserSelectionStore.of(this).get(SelectionPool.SPECIALTIES));
+        int restoredCount = 0;
 
         for (Specialty specialty : specialties) {
             View rowView = inflater.inflate(R.layout.item_specialty_row, container, false);
@@ -99,49 +72,29 @@ public class SpecialityChooser4 extends StepActivity {
 
             checkBox.setText(specialty.getLabel());
             CompoundButtonCompat.setButtonTintList(checkBox, null);
-            checkBox.setChecked(saved.contains(specialty.getLabel()));
+            boolean restore = SelectionLimitHelper.shouldRestoreAsChecked(
+                    saved.contains(specialty.getLabel()),
+                    restoredCount,
+                    MAX_SPECIALTIES
+            );
+            checkBox.setChecked(restore);
+            if (restore) {
+                restoredCount++;
+            }
 
             container.addView(rowView);
-            specialtyRows.add(new SpecialtyRow(specialty, checkBox, rowView));
+            specialtyRows.add(new SpecialtyRow(specialty, checkBox));
+            specialtyCheckBoxes.add(checkBox);
         }
 
-        EditText searchField = findViewById(R.id.specialty_search);
-        if (searchField != null) {
-            searchField.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    applySpecialtyFilter(s.toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
+        for (CheckBox checkBox : specialtyCheckBoxes) {
+            SelectionLimitHelper.bindMaxSelection(
+                    checkBox,
+                    specialtyCheckBoxes,
+                    MAX_SPECIALTIES,
+                    MSG_MAX_SPECIALTIES
+            );
         }
-    }
-
-    private void applySpecialtyFilter(@NonNull String query) {
-        String normalized = query.trim().toLowerCase(Locale.getDefault());
-        for (SpecialtyRow row : specialtyRows) {
-            boolean visible = normalized.isEmpty()
-                    || row.specialty.getLabel().toLowerCase(Locale.getDefault()).contains(normalized);
-            row.rowView.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    private static int bestTagRank(@NonNull List<String> tags, @NonNull Map<String, Integer> directionRank) {
-        int best = Integer.MAX_VALUE;
-        for (String tag : tags) {
-            Integer rank = directionRank.get(tag);
-            if (rank != null && rank < best) {
-                best = rank;
-            }
-        }
-        return best;
     }
 
     @Nullable
@@ -179,7 +132,6 @@ public class SpecialityChooser4 extends StepActivity {
     @Override
     protected CharSequence getHelpMessage() {
         return "Отметь от 1 до 5 специальностей из списка.\n" +
-                "Используй поиск - 🔍, чтобы быстро найти нужную специальность.\n" +
                 "Список соответствует выбранной ступени (бакалавриат или магистратура).";
     }
 
@@ -212,12 +164,10 @@ public class SpecialityChooser4 extends StepActivity {
     private static final class SpecialtyRow {
         final Specialty specialty;
         final CheckBox checkBox;
-        final View rowView;
 
-        SpecialtyRow(Specialty specialty, CheckBox checkBox, View rowView) {
+        SpecialtyRow(Specialty specialty, CheckBox checkBox) {
             this.specialty = specialty;
             this.checkBox = checkBox;
-            this.rowView = rowView;
         }
     }
 }

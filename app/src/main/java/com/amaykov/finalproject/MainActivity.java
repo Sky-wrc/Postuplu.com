@@ -617,10 +617,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (id == R.id.menu_clear_data) {
                     clearAllUserData();
-                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+        startActivity(intent);
+        finish();
                     return true;
                 }
                 if (id == R.id.menu_exit) {
